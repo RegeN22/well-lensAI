@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, UploadedFiles, Put, Req, Res } from "@nestjs/common";
-import { UserService } from "../service/user.service";
+import { UserService } from "./user.service";
 import { JwtService } from '@nestjs/jwt';
-import { User } from "src/model/user.schema";
+import { User } from "src/user/user.schema";
 import dotenv from "dotenv"
 import { GoogleGenerativeAI } from "@google/generative-ai";
 

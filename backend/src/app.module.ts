@@ -4,7 +4,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { JwtModule } from '@nestjs/jwt';
 import { secret } from './utils/constants';
 import { join } from 'path';
-import { User, UserSchema } from './model/user.schema';
+import { User, UserSchema } from './user/user.schema';
 
 @Module({
   imports: [
