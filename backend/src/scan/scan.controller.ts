@@ -1,4 +1,12 @@
-import { Controller, Param, Post, Res, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Param,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { IRateProductResponse } from '../utils/gen-ai/types/gen-ai.interfaces';
 import { ScanService } from './scan.service';
 
 @Controller('/api/v1/scan')
@@ -6,16 +14,19 @@ export class ScanController {
   constructor(private readonly scanServerice: ScanService) {}
 
   @Post()
-  async scan(@Res() response, @UploadedFile() file: Express.Multer.File) {
-    // return await this.scanServerice.scan(file);
+  @UseInterceptors(FileInterceptor('file'))
+  async scan(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<IRateProductResponse> {
+    return await this.scanServerice.scanProduct(file);
   }
 
   @Post('user/:userId')
+  @UseInterceptors(FileInterceptor('file'))
   async scanAsUser(
-    @Res() response,
     @UploadedFile() file: Express.Multer.File,
     @Param('userId') userId: number,
-  ) {
-    // return await this.scanServerice.scanAsUser(userId, file);
+  ): Promise<IRateProductResponse> {
+    return await this.scanServerice.scanProductForUser(userId, file);
   }
 }
