@@ -28,7 +28,7 @@ export function parseArrayJSON<T = any>(json: string): T {
     .slice(0, -1)
     .join(']');
 
-  return JSON.parse(toParse);
+  return JSON.parse(`[${toParse}]`);
 }
 
 /**

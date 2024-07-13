@@ -4,7 +4,7 @@ import {
   GoogleGenerativeAI,
 } from '@google/generative-ai';
 import { IPersonalInfo } from '../../user/types/user.interfaces';
-import { isUndefined, parseJSON } from '../general.util';
+import { isUndefined, parseArrayJSON, parseJSON } from '../general.util';
 import { DEFAULT_SCALE, GEN_AI_MODEL } from './types/gen-ai.consts';
 import { IRateProductResponse } from './types/gen-ai.interfaces';
 
@@ -35,7 +35,7 @@ async function getIngredientsFromImage(
     },
   ]);
 
-  return parseJSON(result.response.text());
+  return parseArrayJSON(result.response.text());
 }
 
 /**
@@ -44,7 +44,7 @@ async function getIngredientsFromImage(
  */
 function buildGetIngredientsPrompt(): string {
   return `
-    Find a text list of ingredients the picture, return the list as a strings array
+    Find a text list of ingredients the picture, return the list as a JSON array
     otherwise return an empty array.
   `;
 }
@@ -61,8 +61,10 @@ async function rateProduct(
   ingredients: string[],
   personalInfo?: IPersonalInfo,
 ): Promise<IRateProductResponse> {
+  const prompt: string = buildRateProductPrompt(ingredients, personalInfo);
+
   const result: GenerateContentResult = await model.generateContent([
-    buildRateProductPrompt(ingredients, personalInfo),
+    prompt,
     {
       inlineData: {
         data: file.buffer.toString('base64'),
@@ -87,17 +89,13 @@ function buildRateProductPrompt(
   personalInfo?: IPersonalInfo,
   scale: string = DEFAULT_SCALE,
 ): string {
-  const ingredientsString: string = `
-    The product's ingredients are:
-    ${ingredients.map((item) => `- ${item}`).join('\n')}
-  `;
-  const rateItems: string = `Rate each ingredient on a ${scale} scale based on nutritional value and health pros and cons.`;
+  const ingredientsString: string = `The product\'s ingredients are:\n${ingredients.map((item) => `- ${item}`).join('\n')}\n`;
+  const rateItems: string = `Rate each ingredient on a ${scale} scale based on nutritional value and health pros and cons. write no more than one sentence for each ingredient.`;
   const totalRateCalc: string = `
     Give the final rating of the product based on on a ${scale} scale
     If at least one of the ingredients has 0 rating, THE FINAL RATING IS 0!
   `;
-  const ratingFormat: string = `
-    Return the result in the following format:
+  const ratingFormat: string = `Return the result in the following format:
     {
       name: string;
       rate: number;
