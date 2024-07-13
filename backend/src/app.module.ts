@@ -10,15 +10,16 @@ import { ScanService } from './scan/scan.service';
 import { UserController } from './user/user.controller';
 import { User, UserSchema } from './user/user.schema';
 import { UserService } from './user/user.service';
-import { secret } from './utils/constants';
+
+require('dotenv').config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/Stream'),
+    MongooseModule.forRoot(process.env.DB_URL),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.register({
-      secret,
-      signOptions: { expiresIn: '2h' },
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRATION },
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
