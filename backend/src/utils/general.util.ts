@@ -13,8 +13,27 @@ export function parseJSON<T = any>(json: string): T {
 }
 
 /**
- * Checks if a value is undefined or null.
+ * Parses a JSON string representing an array and returns the parsed array.
  * 
+ * @template T - The type of the elements in the array.
+ * @param {string} json - The JSON string to parse.
+ * @returns {T} - The parsed array.
+ */
+export function parseArrayJSON<T = any>(json: string): T {
+  const toParse: string = json
+    .split('[')
+    .slice(1)
+    .join('[')
+    .split(']')
+    .slice(0, -1)
+    .join(']');
+
+  return JSON.parse(toParse);
+}
+
+/**
+ * Checks if a value is undefined or null.
+ *
  * @param value - The value to check.
  * @returns True if the value is undefined or null, false otherwise.
  */

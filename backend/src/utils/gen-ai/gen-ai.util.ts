@@ -44,8 +44,8 @@ async function getIngredientsFromImage(
  */
 function buildGetIngredientsPrompt(): string {
   return `
-    Find a text list of ingredients the picture, return the list as a JSON array
-    otherwise return empty JSON array.
+    Find a text list of ingredients the picture, return the list as a strings array
+    otherwise return an empty array.
   `;
 }
 
