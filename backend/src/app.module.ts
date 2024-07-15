@@ -21,9 +21,9 @@ require('dotenv').config();
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-    }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', 'public'),
+    // }),
   ],
   controllers: [AppController, UserController, ScanController],
   providers: [AppService, UserService, ScanService],
