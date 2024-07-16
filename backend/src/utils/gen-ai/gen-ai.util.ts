@@ -3,6 +3,7 @@ import {
   GenerativeModel,
   GoogleGenerativeAI,
 } from '@google/generative-ai';
+import * as uuid from 'uuid';
 import { IPersonalInfo } from '../../user/types/user.interfaces';
 import { isUndefined, parseArrayJSON, parseJSON } from '../general.util';
 import { DEFAULT_SCALE, GEN_AI_MODEL } from './types/gen-ai.consts';
@@ -73,7 +74,14 @@ async function rateProduct(
     },
   ]);
 
-  return parseJSON(result.response.text());
+  const response: IRateProductResponse = parseJSON(result.response.text());
+  response.id = uuid.v4();
+
+  for (const ingredient of response.ingredients) {
+    ingredient.id = uuid.v4();
+  }
+
+  return response;
 }
 
 /**

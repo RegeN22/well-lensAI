@@ -1,4 +1,5 @@
 export interface IRateItemResponse {
+  id: string;
   name: string;
   rate: number;
   text: string;
