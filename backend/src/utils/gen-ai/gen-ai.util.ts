@@ -98,10 +98,11 @@ function buildRateProductPrompt(
   scale: string = DEFAULT_SCALE,
 ): string {
   const ingredientsString: string = `The product\'s ingredients are:\n${ingredients.map((item) => `- ${item}`).join('\n')}\n`;
-  const rateItems: string = `Rate each ingredient on a ${scale} scale based on nutritional value and health pros and cons.`;
+  const rateItems: string = `Rate each ingredient on a ${scale} scale based on nutritional value and health pros and cons. write no more than one sentence for each ingredient.`;
   const totalRateCalc: string = `
     Give the final rating of the product based on on a ${scale} scale
     If at least one of the ingredients has 0 rating, THE FINAL RATING IS 0!
+    Write a summary of the product's health benefits and cons.
   `;
   const ratingFormat: string = `Return the result in the following format:
     {
