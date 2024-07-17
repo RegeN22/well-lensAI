@@ -33,7 +33,7 @@ export class ScanService {
       },
     );
 
-    console.info(`Product '${result.name}' scanned successfully`);
+    console.info(`Product  scanned successfully`);
     return result;
   }
 
