@@ -12,13 +12,14 @@ import {
   rateItems,
   ratingFormat,
   totalRateCalc,
+  GEN_AI_KEY
 } from './types/gen-ai.consts';
 import { IRateProductResponse } from './types/gen-ai.interfaces';
 
 require('dotenv').config();
 
 const genAI: GoogleGenerativeAI = new GoogleGenerativeAI(
-  process.env.GEN_AI_KEY,
+  GEN_AI_KEY,
 );
 const model: GenerativeModel = genAI.getGenerativeModel({
   model: GEN_AI_MODEL,
@@ -32,6 +33,7 @@ const model: GenerativeModel = genAI.getGenerativeModel({
 async function getIngredientsFromImage(
   file: Express.Multer.File,
 ): Promise<string[]> {
+  console.log(file)
   const result: GenerateContentResult = await model.generateContent([
     buildGetIngredientsPrompt(),
     {

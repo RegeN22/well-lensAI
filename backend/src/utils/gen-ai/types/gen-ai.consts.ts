@@ -39,3 +39,5 @@ Return the result in the following format:
     ]
 }
 `;
+
+export const GEN_AI_KEY = "AIzaSyBzfw8a69jWdmLa46WdBesTLQzaEOQnmAw"
