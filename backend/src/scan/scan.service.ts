@@ -19,7 +19,11 @@ export class ScanService {
     console.info('Got request to scan product');
     const ingredients: string[] = await GenAI.getIngredientsFromImage(file);
 
-    if (!ingredients?.length) {
+    if (ingredients?.length) {
+      console.debug(
+        `Ingredients found in image: ${JSON.stringify(ingredients)}`,
+      );
+    } else {
       throw new HttpException(
         'No ingredients found in image',
         HttpStatus.BAD_REQUEST,
@@ -29,6 +33,14 @@ export class ScanService {
     const result: IRateProductResponse = await GenAI.rateProduct(
       file,
       ingredients,
+      {
+        age: 23,
+        height: 180,
+        gender: 'Male',
+        weight: 82,
+        allergies: ['Milk'],
+        deceases: ['Diabetes', 'Hypertension'],
+      },
     );
 
     console.info(`Product '${result.name}' scanned successfully`);
