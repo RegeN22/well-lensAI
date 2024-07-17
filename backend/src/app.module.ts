@@ -15,7 +15,7 @@ require('dotenv').config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.DB_URL),
+    MongooseModule.forRoot("mongodb://localhost:27017/Stream"),
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
     JwtModule.register({
       secret: process.env.JWT_SECRET,

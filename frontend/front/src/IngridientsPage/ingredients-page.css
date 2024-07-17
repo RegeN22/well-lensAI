@@ -1,0 +1,35 @@
+.card-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 6vh;
+}
+
+.subtitle {
+    font-size: 3vh;
+}
+
+.highlighted-text {
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+}
+
+.rating {
+    width: 100% !important;
+    border-radius: initial !important;
+}
+
+.main-flex {
+    display: flex;
+}
+
+.product-flex {
+    display: flex;
+    flex-direction: column;
+}

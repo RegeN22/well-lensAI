@@ -4,13 +4,13 @@ import {
   Card,
   CardContent,
   Collapse,
-  Grid,
-  Paper,
   Typography,
 } from "@mui/material";
 import { Grade } from "./Grade.tsx";
+import "./ingredients-page.css"
+import { ProgressBar } from "./ProgressBar.tsx";
 
-const ingredients = {
+const ingredients2 = {
   water:
     "The primary solvent in most shampoos, providing hydration and helping to dissolve other ingredients.",
   "sodium lauryl sulfate":
@@ -23,17 +23,36 @@ const ingredients = {
     "Adds a pleasant scent to the shampoo, enhancing the overall user experience.",
 };
 
-export const Ingredients = () => {
+export type ingredient = {
+  name: string,
+  rate: number,
+  text: string
+}
+
+interface IngredientsProps {
+  ingredients: ingredient[]
+}
+
+export const Ingredients = ({ingredients = []}:IngredientsProps) => {
   // State to manage expanded items
-  const [expandedItems, setExpandedItems] = useState({});
+  const [expandedItem, setExpandedItem] = useState();
 
   // Toggle expansion for a specific ingredient
   const handleCardClick = (ingredient) => {
-    setExpandedItems((prevState) => ({
-      ...prevState,
-      [ingredient]: !prevState[ingredient],
-    }));
+    setExpandedItem(ingredient);
   };
+
+  const getPBarColor = (rating:number):string => {
+    if (rating === 0) {
+      return "black"
+    } else if (rating <= 4) {
+      return "rgb(200 7 7)"
+    } else if (rating <= 7) {
+      return "rgb(211 203 40)"
+    } else {
+      return "#52af77"
+    }
+  }
 
   return (
     <Box
@@ -46,18 +65,23 @@ export const Ingredients = () => {
         mx: "auto",
       }}
     >
-      <Grade />
-      {Object.keys(ingredients).map((ingredient) => (
+      {ingredients.map((ingredient) => (
         <Card
           variant="outlined"
-          onClick={() => handleCardClick(ingredient)}
+          onClick={() => handleCardClick(ingredient.name)}
           sx={{ cursor: "pointer", width: "inherit", mt: 2 }}
         >
-          <CardContent>
-            <Typography variant="h6">{ingredient}</Typography>
-            <Collapse in={!!expandedItems[ingredient]}>
+          <CardContent className="card-flex">
+            <Typography variant="h6">{ingredient.name}</Typography>
+            <ProgressBar
+                bgcolor={getPBarColor(ingredient.rate)}
+                progress={ingredient.rate / 10 * 100}
+                height={30}
+            />
+            <Grade grade={ingredient.rate}/>
+            <Collapse in={expandedItem===ingredient.name}>
               <Typography variant="body2" color="textSecondary">
-                {ingredients[ingredient]}
+                {ingredient.text}
               </Typography>
             </Collapse>
           </CardContent>
