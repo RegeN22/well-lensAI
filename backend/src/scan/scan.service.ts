@@ -24,6 +24,7 @@ export class ScanService {
         `Ingredients found in image: ${JSON.stringify(ingredients)}`,
       );
     } else {
+      console.error('No ingredients found in image');
       throw new HttpException(
         'No ingredients found in image',
         HttpStatus.BAD_REQUEST,
