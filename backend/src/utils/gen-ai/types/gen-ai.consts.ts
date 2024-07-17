@@ -7,7 +7,7 @@ export const ingredientsString = (ingredients: string[]): string => {
 };
 
 export const rateItems = (scale = DEFAULT_SCALE): string => {
-  return `Rate each ingredient on a ${scale} scale based on nutritional value and health pros and cons.`;
+  return `Rate each ingredient on a ${scale} scale based health pros and cons.`;
 };
 
 // export const rateItems = (scale = DEFAULT_SCALE): string => {
