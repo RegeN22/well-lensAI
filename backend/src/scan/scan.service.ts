@@ -23,14 +23,14 @@ export class ScanService {
     const result: IRateProductResponse = await GenAI.rateProduct(
       file,
       ingredients,
-      {
-        age: 23,
-        height: 180,
-        gender: 'Male',
-        weight: 82,
-        allergies: ['Milk'],
-        deceases: ['Diabetes', 'Hypertension'],
-      },
+      // {
+      //   age: 23,
+      //   height: 180,
+      //   gender: 'Male',
+      //   weight: 82,
+      //   allergies: ['Milk'],
+      //   deceases: ['Diabetes', 'Hypertension'],
+      // },
     );
 
     console.info(`Product '${result.name ?? 'unknown'}' scanned successfully`);
