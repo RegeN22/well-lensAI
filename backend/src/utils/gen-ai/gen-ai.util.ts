@@ -7,20 +7,18 @@ import * as uuid from 'uuid';
 import { IPersonalInfo } from '../../user/types/user.interfaces';
 import { isUndefined, parseArrayJSON, parseJSON } from '../general.util';
 import {
+  GEN_AI_KEY,
   GEN_AI_MODEL,
   ingredientsString,
   rateItems,
   ratingFormat,
   totalRateCalc,
-  GEN_AI_KEY
 } from './types/gen-ai.consts';
 import { IRateProductResponse } from './types/gen-ai.interfaces';
 
 require('dotenv').config();
 
-const genAI: GoogleGenerativeAI = new GoogleGenerativeAI(
-  GEN_AI_KEY,
-);
+const genAI: GoogleGenerativeAI = new GoogleGenerativeAI(GEN_AI_KEY);
 const model: GenerativeModel = genAI.getGenerativeModel({
   model: GEN_AI_MODEL,
 });
@@ -57,7 +55,7 @@ async function getIngredientsFromImage(
  */
 function buildGetIngredientsPrompt(): string {
   return `
-    Find a text list of ingredients the picture, return the list as a JSON array
+    Find a text list of ingredients from the picture, return the list as a JSON array
     otherwise return an empty array.
   `;
 }
