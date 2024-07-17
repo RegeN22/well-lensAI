@@ -106,7 +106,6 @@ function buildRateProductPrompt(
   personalInfo?: IPersonalInfo,
 ): string {
   const prompt: string = `
-Determine if a product is healthy for this specific person or not according to this list.
 ${buildPersonalInfoPrompt(personalInfo)}
 ${ingredientsString(ingredients)}
 ${rateItems()}
@@ -123,9 +122,13 @@ ${ratingFormat}
  * @returns The generated prompt string.
  */
 function buildPersonalInfoPrompt(personalInfo?: IPersonalInfo): string {
-  if (!validatePersonalInfo(personalInfo)) return '';
+  if (!validatePersonalInfo(personalInfo)) {
+    return 'Determine if a product is healthy for a person or not according to this list.';
+  }
 
-  let result = 'PAY ATTENTION to the health background of the person:';
+  let result: string =
+    'Determine if a product is healthy for this specific person or not according to this list.';
+  result += '\nPAY ATTENTION to the health background of the person:';
 
   result += buildValuePropPrompt('Age', personalInfo.age, 'years old');
   result += buildValuePropPrompt('Gender', personalInfo.gender);
