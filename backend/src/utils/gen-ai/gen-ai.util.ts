@@ -32,17 +32,22 @@ const model: GenerativeModel = genAI.getGenerativeModel({
 async function getIngredientsFromImage(
   file: Express.Multer.File,
 ): Promise<string[]> {
-  const result: GenerateContentResult = await model.generateContent([
-    buildGetIngredientsPrompt(),
-    {
-      inlineData: {
-        data: file.buffer.toString('base64'),
-        mimeType: file.mimetype,
+  try {
+    const result: GenerateContentResult = await model.generateContent([
+      buildGetIngredientsPrompt(),
+      {
+        inlineData: {
+          data: file.buffer.toString('base64'),
+          mimeType: file.mimetype,
+        },
       },
-    },
-  ]);
+    ]);
 
-  return parseArrayJSON(result.response.text());
+    return parseArrayJSON(result.response.text());
+  } catch (error) {
+    console.warn(`Error getting ingredients from image:\n${error}`);
+    return [];
+  }
 }
 
 /**
