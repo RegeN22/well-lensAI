@@ -13,6 +13,25 @@ export function parseJSON<T = any>(json: string): T {
 }
 
 /**
+ * Parses a JSON string and returns the parsed object.
+ *
+ * @template T - The type of the object to parse.
+ * @param {string} json - The JSON string to parse.
+ * @returns {T} - The parsed object.
+ */
+export function parseObjectJSON<T = any>(json: string): T {
+  const toParse: string = json
+    .split('{')
+    .slice(1)
+    .join('{')
+    .split('}')
+    .slice(0, -1)
+    .join('}');
+
+  return parseJSON(`{${toParse}}`);
+}
+
+/**
  * Parses a JSON string representing an array and returns the parsed array.
  *
  * @template T - The type of the elements in the array.
@@ -28,7 +47,7 @@ export function parseArrayJSON<T = any>(json: string): T {
     .slice(0, -1)
     .join(']');
 
-  return JSON.parse(`[${toParse}]`);
+  return parseJSON(`[${toParse}]`);
 }
 
 /**

@@ -5,7 +5,7 @@ import {
 } from '@google/generative-ai';
 import * as uuid from 'uuid';
 import { IPersonalInfo } from '../../user/types/user.interfaces';
-import { isUndefined, parseArrayJSON, parseJSON } from '../general.util';
+import { isUndefined, parseArrayJSON, parseObjectJSON } from '../general.util';
 import {
   GEN_AI_KEY,
   GEN_AI_MODEL,
@@ -42,12 +42,29 @@ async function getIngredientsFromImage(
       },
     ]);
 
-    return parseArrayJSON(result.response.text());
+    const ingredients: string[] = parseArrayJSON(result.response.text());
+    return processIngredients(ingredients);
   } catch (error) {
     console.warn(`Error getting ingredients from image:\n${error}`);
     return [];
   }
 }
+
+/**
+ * Processes the ingredients list by removing empty strings and duplicates.
+ * @param ingredients - The ingredients list to process.
+ * @returns An array of strings representing the processed ingredients.
+ */
+function processIngredients(ingredients: string[]): string[] {
+  const result: string[] = []
+
+  for (const ingredient of ingredients) {
+    if (ingredient) {
+      result.push(ingredient);
+    }
+  }
+
+  return result;
 
 /**
  * Builds a prompt for getting a list of ingredients as a JSON array.
@@ -84,7 +101,9 @@ async function rateProduct(
     },
   ]);
 
-  const response: IRateProductResponse = parseJSON(result.response.text());
+  const response: IRateProductResponse = parseObjectJSON(
+    result.response.text(),
+  );
   response.id = uuid.v4();
 
   for (const ingredient of response.ingredients) {
