@@ -65,6 +65,7 @@ function processIngredients(ingredients: string[]): string[] {
   }
 
   return result;
+}
 
 /**
  * Builds a prompt for getting a list of ingredients as a JSON array.
