@@ -3,6 +3,7 @@ import {
   GenerativeModel,
   GoogleGenerativeAI,
 } from '@google/generative-ai';
+import * as dotenv from 'dotenv';
 import * as uuid from 'uuid';
 import { IPersonalInfo } from '../../user/types/user.interfaces';
 import { isUndefined, parseArrayJSON, parseObjectJSON } from '../general.util';
@@ -16,7 +17,7 @@ import {
 } from './types/gen-ai.consts';
 import { IRateProductResponse } from './types/gen-ai.interfaces';
 
-require('dotenv').config();
+dotenv.config();
 
 const genAI: GoogleGenerativeAI = new GoogleGenerativeAI(GEN_AI_KEY);
 const model: GenerativeModel = genAI.getGenerativeModel({
@@ -56,10 +57,21 @@ async function getIngredientsFromImage(
  * @returns An array of strings representing the processed ingredients.
  */
 function processIngredients(ingredients: string[]): string[] {
-  const result: string[] = []
+  const result: string[] = [];
 
   for (const ingredient of ingredients) {
     if (ingredient) {
+      // const closeSplits: string[] = ingredient.split(')');
+      // for (const closeSplit of closeSplits) {
+      //   const openSplits: string[] = closeSplit.split('(');
+      //   const comaSplits: string[] = openSplits[0].split(',');
+
+      //   if (comaSplits.length > 1) {
+      //     result.push(...comaSplits.slice(0, -1).map((item) => item.trim()));
+
+      //   }
+      // }
+
       result.push(ingredient);
     }
   }
@@ -73,8 +85,8 @@ function processIngredients(ingredients: string[]): string[] {
  */
 function buildGetIngredientsPrompt(): string {
   return `
-    Find a text list of ingredients from the picture, return the list as a JSON array
-    otherwise return an empty array.
+Find a text list of ingredients from the picture, FILTER non-ingredients items. return the list as a JSON array
+otherwise return an empty array.
   `;
 }
 
