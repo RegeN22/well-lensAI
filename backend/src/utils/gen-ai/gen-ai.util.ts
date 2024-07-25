@@ -86,7 +86,7 @@ function processIngredients(ingredients: string[]): string[] {
  */
 function buildGetIngredientsPrompt(): string {
   return `
-Find a text list of ingredients from the picture, FILTER non-ingredients items. return the list as a JSON array
+Find a text list of ingredients from the picture, FILTER NON-INGREDIENTS items. return the list as a JSON array
 otherwise return an empty array.
   `;
 }
