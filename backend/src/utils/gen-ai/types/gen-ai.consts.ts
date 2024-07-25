@@ -27,18 +27,17 @@ Write a summary of the product's health benefits and cons.
 export const ratingFormat: string = `
 Return the result in the following format:
 {
-    "name": string;
-    "rate": number;
-    "text": string;
-    "ingredients": [
+  "name": string;
+  "rate": number;
+  "text": string;
+  "ingredients": [
     {
     "name": string;
     "rate": number;
+    "text": string;
     }
     ...
-    ]
+  ]
 }.
 Don't add anything incuding type assertion. The response must be a valid json.
 `;
-
-export const GEN_AI_KEY = "AIzaSyBzfw8a69jWdmLa46WdBesTLQzaEOQnmAw"

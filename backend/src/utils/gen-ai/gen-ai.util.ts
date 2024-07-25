@@ -8,7 +8,6 @@ import * as uuid from 'uuid';
 import { IPersonalInfo } from '../../user/types/user.interfaces';
 import { isUndefined, parseArrayJSON, parseObjectJSON } from '../general.util';
 import {
-  GEN_AI_KEY,
   GEN_AI_MODEL,
   ingredientsString,
   rateItems,
@@ -19,7 +18,9 @@ import { IRateProductResponse } from './types/gen-ai.interfaces';
 
 dotenv.config();
 
-const genAI: GoogleGenerativeAI = new GoogleGenerativeAI(GEN_AI_KEY);
+const genAI: GoogleGenerativeAI = new GoogleGenerativeAI(
+  process.env.GEN_AI_KEY,
+);
 const model: GenerativeModel = genAI.getGenerativeModel({
   model: GEN_AI_MODEL,
 });
