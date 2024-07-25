@@ -27,6 +27,7 @@
 
 .main-flex {
     display: flex;
+    flex-direction: column;
 }
 
 .product-flex {

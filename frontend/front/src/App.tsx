@@ -54,8 +54,8 @@ function App() {
     <>
       <ProductDescription grade={currentItem?.rate} name={currentItem?.name} overallAssessment={currentItem?.text} ></ProductDescription>
       <div className="main-flex">
-        <Ingredients ingredients={ingredients} />
         <PictureUpload onUpload={uploadPicture} />
+        <Ingredients ingredients={ingredients} />
         <Snackbar
           open={isLoading}
           message="Loading..."
