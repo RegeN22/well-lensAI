@@ -1,4 +1,4 @@
-export const GEN_AI_MODEL = 'gemini-1.5-pro';
+export const GEN_AI_MODEL = 'gemini-1.5-flash';
 
 export const DEFAULT_SCALE = '0-10';
 
