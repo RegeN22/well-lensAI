@@ -61,7 +61,7 @@ export const Ingredients = ({ingredients = []}:IngredientsProps) => {
         justifyContent: "center",
         flexDirection: "column",
         alignItems: "center",
-        width: "700px",
+        width: "100%",
         mx: "auto",
       }}
     >

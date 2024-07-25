@@ -37,7 +37,8 @@ Return the result in the following format:
     }
     ...
     ]
-}
+}.
+Don't add anything incuding type assertion. The response must be a valid json.
 `;
 
 export const GEN_AI_KEY = "AIzaSyBzfw8a69jWdmLa46WdBesTLQzaEOQnmAw"
