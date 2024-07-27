@@ -1,22 +1,11 @@
-import styled from "@emotion/styled";
 import { Box, Button, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
+import { useCameraDevice } from 'react-native-vision-camera'
+import { Camera } from 'react-native-vision-camera-text-recognition';
 
 interface Props {
   onUpload?: (picture: File) => void
 }
-
-const Input = styled('input')({
-  display: 'none',
-});
-
-const ImagePreview = styled('img')({
-  width: '100%',
-  height: 'auto',
-  borderRadius: '8px',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-  marginTop: '16px',
-});
 
 export default function PictureUpload({ onUpload }: Props): JSX.Element {
   const [pic, setPic] = useState('')
@@ -34,6 +23,7 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
   const handleButtonClick = () => {
     inputRef.current?.click();
   };
+  const device = useCameraDevice('back');
 
   return (<>
     <Box
@@ -49,7 +39,20 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
       }}
     >
       <label htmlFor="image-upload">
-        <Input ref={inputRef} type="file" accept="image/*" capture="environment" onChange={onUploadPic} />
+
+        {!!device && (
+          <Camera
+            device={device}
+            isActive
+            options={{
+              language: 'latin'
+            }}
+            mode={'recognize'}
+            callback={(d) => console.log(d)}
+          />
+        )}
+
+        <input style={{display: 'none'}} ref={inputRef} type="file" accept="image/*" capture="environment" onChange={onUploadPic} />
         <Button variant="contained" component="span" onClick={handleButtonClick}> Upload Image</Button>
       </label>
       {pic && (
@@ -57,7 +60,7 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
           <Typography variant="h6" component="p" sx={{ marginTop: '16px' }}>
             Image Preview
           </Typography>
-          <ImagePreview src={pic} alt="Preview" />
+          <img className="image-preview" src={pic} alt="Preview" />
         </>
       )}
     </Box>

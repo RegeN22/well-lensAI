@@ -10,19 +10,6 @@ import { Grade } from "./Grade.tsx";
 import "./ingredients-page.css"
 import { ProgressBar } from "./ProgressBar.tsx";
 
-const ingredients2 = {
-  water:
-    "The primary solvent in most shampoos, providing hydration and helping to dissolve other ingredients.",
-  "sodium lauryl sulfate":
-    "A surfactant that helps create foam and cleanses the hair and scalp by removing oils and dirt.",
-  "cocamidopropyl betaine":
-    "A mild surfactant derived from coconut oil that helps to produce foam and reduce irritation.",
-  panthenol:
-    "Also known as vitamin B5, it helps to moisturize and strengthen hair, improving its appearance and feel.",
-  fragrance:
-    "Adds a pleasant scent to the shampoo, enhancing the overall user experience.",
-};
-
 export type ingredient = {
   name: string,
   rate: number,

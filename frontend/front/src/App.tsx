@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useCallback } from "react";
 import { Ingredients, ingredient } from "./IngridientsPage/Ingredients.tsx";
 import PictureUpload from "./PictureUpload/PictureUpload.tsx";
 import { ProductDescription } from "./IngridientsPage/ProductDescription.tsx";
@@ -39,6 +39,7 @@ function App() {
       setLoadingError("Incomplete response.");
       // TODO maybe create a function that tries it again or asks the user if they want to try again
     } else {
+      saveToHistory(data,formData);
       setIngredients(data.ingredients);
       setCurrentItem({
         name: data.name,
@@ -47,6 +48,20 @@ function App() {
       });
     }
   };
+
+  const saveToHistory = useCallback(async (data:dataType, image: FormData) => {
+    await fetch("http://localhost:3000/api/v1/history", {
+      method:"POST",
+      body: JSON.stringify({
+        userId: "123",//TODO
+        image:image,
+        jsonData:data
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+  },[])
 
   return (
     <>
