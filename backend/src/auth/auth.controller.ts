@@ -3,22 +3,14 @@ import { Request } from 'express';
 import { AccessTokenGuard } from './accessToken.guard';
 import { RefreshTokenGuard } from './refreshToken.guard';
 import { AuthService } from './auth.service';
-export interface AuthDto {
-    username: string;
-    password: string;
-}
-export interface CreateUserDto {
-    name: string;
-    username: string;
-    password: string;
-    refreshToken?: string;
-}
+import { AuthDto, CreateUserDto } from 'src/user/types/createUserDTO.type';
+
 @Controller('auth')
 export class AuthController {
     constructor(private authService: AuthService) { }
 
     @Post('signup')
-    signup(@Body() createUserDto: CreateUserDto) {
+    async signup(@Body() createUserDto: CreateUserDto) {
         return this.authService.signUp(createUserDto);
     }
 

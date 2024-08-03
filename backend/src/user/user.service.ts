@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
+import { CreateUserDto } from './types/createUserDTO.type';
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,7 @@ export class UserService {
     return this.userModel.findOne({ $or: [{ email }, { username }] }).exec()
   }
 
-  async create(user: { firstname: string, lastName: string, password: string, email: string, username: string }) {
+  async create(user: CreateUserDto) {
     const user1 = await this.userModel.create(user);
     const tokens = await this.generateTokens(user1);
     const { email, firstName, lastName, username, _id } = user1;
