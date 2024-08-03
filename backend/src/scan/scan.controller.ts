@@ -9,7 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { IRateProductResponse } from '../utils/gen-ai/types/gen-ai.interfaces';
 import { ScanService } from './scan.service';
 
-@Controller('/api/v1/scan')
+@Controller('/api/v1/scans')
 export class ScanController {
   constructor(private readonly scanServerice: ScanService) {}
 

@@ -14,8 +14,8 @@ export default function ScansPage(): JSX.Element {
   const navigate = useNavigate();
   //TODO load history of scans
   const products: ProductScanModel[] = [
-    {name: 'bla bla', rate: 9, text: 'very good', ingredients: []},
-    {name: 'bla bla bla', rate: 4, text: 'not good', ingredients: []}
+    {_id: '1', name: 'bla bla', rate: 9, text: 'very good', ingredients: []},
+    {_id: '2', name: 'bla bla bla', rate: 4, text: 'not good', ingredients: []}
   ];
 
   return (
