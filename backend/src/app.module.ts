@@ -12,9 +12,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRootAsync({ inject: [ConfigService], useFactory: (configService: ConfigService) => ({}) }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
-    MongooseModule.forFeature([{ name: History.name, schema: HistorySchema }]),
+    MongooseModule.forRootAsync({ inject: [ConfigService], useFactory: (configService: ConfigService) => ({uri:configService.get("DB_URL")}) }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
