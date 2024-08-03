@@ -1,50 +1,46 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
-import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './user.schema';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
-
-  async signup(user: User): Promise<User> {
-    const salt = await bcrypt.genSalt();
-    const hash = await bcrypt.hash(user.password, salt);
-    const reqBody = {
-      fullname: user.fullname,
-      email: user.email,
-      password: hash,
-    };
-    const newUser = new this.userModel(reqBody);
-    return newUser.save();
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, private jwtService: JwtService, private configService: ConfigService) { }
+  async findOne(email: string, username: string) {
+    return this.userModel.findOne({ $or: [{ email }, { username }] }).exec()
   }
 
-  async signin(user: User, jwt: JwtService): Promise<any> {
-    const foundUser = await this.userModel
-      .findOne({ email: user.email })
-      .exec();
-    if (foundUser) {
-      const { password } = foundUser;
-      if (bcrypt.compare(user.password, password)) {
-        const payload = { email: user.email };
-        return {
-          token: jwt.sign(payload),
-        };
-      }
-      return new HttpException(
-        'Incorrect username or password',
-        HttpStatus.UNAUTHORIZED,
-      );
+  async create(user: { firstname: string, lastName: string, password: string, email: string, username: string }) {
+    const user1 = await this.userModel.create(user);
+    const tokens = await this.generateTokens(user1);
+    const { email, firstName, lastName, username, _id } = user1;
+    return { email, firstName, lastName, username, _id, ...tokens };
+  }
+
+  async generateTokens(user: UserDocument) {
+    const accessToken = this.jwtService.sign({ _id: user._id }, {
+      secret: this.configService.get("JWT_SECRET"),
+      expiresIn: this.configService.get("JWT_EXPIRATION"),
+    });
+    const refreshToken = this.jwtService.sign(
+      { _id: user._id },
+      {
+        secret: this.configService.get("JWT_REFRESH_SECRET")
+      });
+
+    if (user.refreshTokens == null) {
+      user.refreshTokens = [refreshToken];
+    } else {
+      user.refreshTokens.push(refreshToken);
     }
-    return new HttpException(
-      'Incorrect username or password',
-      HttpStatus.UNAUTHORIZED,
-    );
-  }
 
-  async getOne(email): Promise<User> {
-    return await this.userModel.findOne({ email }).exec();
-  }
+    await user.save();
+
+    return {
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    };
+  };
 }

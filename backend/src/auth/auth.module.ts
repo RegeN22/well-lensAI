@@ -3,8 +3,9 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { AuthGuard } from './auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { AccessTokenStrategy } from './accessToken.strategy';
+import { RefreshTokenStrategy } from './refreshToken.strategy';
 
 @Module({
   imports: [JwtModule.registerAsync({
@@ -18,10 +19,7 @@ import { APP_GUARD } from '@nestjs/core';
     inject: [ConfigService]
   })],
   controllers: [AuthController],
-  providers: [AuthService, {
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-  },],
+  providers: [AuthService, AccessTokenStrategy, RefreshTokenStrategy],
   exports: []
 })
 export class AuthModule { }

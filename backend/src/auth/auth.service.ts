@@ -4,19 +4,23 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
+    constructor(private userService: UserService,
+        private jwtService: JwtService,) { }
 
-    constructor( private userService: UserService,
-        private jwtService: JwtService,){}
 
-        async signIn(username: string, pass: string) {
-            const user = {password:"",username,userId:""}//await this.usersService.findOne(username);
-            if (user?.password !== pass) {
-              throw new UnauthorizedException();
-            }
-            const payload = { username: user.username, sub: user.userId };
-            return {
-              access_token: await this.jwtService.signAsync(payload),
-            };
-          }
-        
+    refreshTokens(userId: any, refreshToken: any) {
+        throw new Error('Method not implemented.');
+    }
+    logout(arg0: any) {
+        throw new Error('Method not implemented.');
+    }
+    signUp(createUserDto: Object) {
+        throw new Error('Method not implemented.');
+    }
+
+
+    async signIn(data: Object) {
+
+    }
+
 }
