@@ -18,7 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
   }
 
 
-  @Controller('/api/v1/history')
+  @Controller('history')
   export class HistoryController {
     constructor(private readonly historyService: HistoryService) {}
     

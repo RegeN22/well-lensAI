@@ -8,7 +8,6 @@ async function bootstrap() {
   const app: INestApplication<any> = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('api');
-  
   const config = new DocumentBuilder()
     .setTitle('Well-LensAI API')
     .setDescription('Well-LensAI API - only tochnitchanim allowed!')

@@ -9,6 +9,7 @@ import { ScanModule } from './scan/scan.module';
 import { UserModule } from './user/user.module';
 import { User, UserSchema } from './user/user.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule.forRoot({ isGlobal: true, load: [], envFilePath: '.env' }),
     UserModule,
     ScanModule,
-    HistoryModule
+    HistoryModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

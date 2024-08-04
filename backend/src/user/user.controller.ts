@@ -1,31 +1,11 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import dotenv from 'dotenv';
-import { User } from 'src/user/user.schema';
-import { UserService } from './user.service';
+import { Controller } from '@nestjs/common';
 
 @Controller('/api/v1/user')
 export class UserController {
   constructor(
-    private readonly userService: UserService,
-    private jwtService: JwtService,
-  ) {}
 
-  @Post('/signup')
-  async Signup(@Res() response, @Body() user: User) {
-    console.log(user);
-    const newUSer = await this.userService.signup(user);
-    return response.status(HttpStatus.CREATED).json({
-      newUSer,
-    });
-  }
-
-  @Post('/signin')
-  async SignIn(@Res() response, @Body() user: User) {
-    const token = await this.userService.signin(user, this.jwtService);
-    return response.status(HttpStatus.OK).json(token);
-  }
+  ) { }
 
   async run(
     ingredients = [
@@ -42,7 +22,6 @@ export class UserController {
     const genAI = new GoogleGenerativeAI(
       'AIzaSyBzfw8a69jWdmLa46WdBesTLQzaEOQnmAw',
     );
-    dotenv.config();
     const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
     let onlyRating = 'answer with the number ONLY. no other words.';
     let onlyRating2 =
