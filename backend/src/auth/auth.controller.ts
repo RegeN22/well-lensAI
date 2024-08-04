@@ -9,27 +9,26 @@ import { AuthDto, CreateUserDto } from 'src/user/types/createUserDTO.type';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
-    @Post('signup')
+    @Post('register')
     async signup(@Body() createUserDto: CreateUserDto) {
-        return this.authService.signUp(createUserDto);
+        return this.authService.register(createUserDto);
     }
 
-    @Post('signin')
-    signin(@Body() data: AuthDto) {
-        return this.authService.signIn(data);
+    @Post('login')
+    signin(@Body("username") username: string, @Body("password") password: string) {
+        return this.authService.login(username, password);
     }
 
     @UseGuards(AccessTokenGuard)
     @Get('logout')
     logout(@Req() req: Request) {
-        this.authService.logout(req?.["user"]['sub']);
+        this.authService.logout(req?.headers.authorization);
     }
 
     @UseGuards(RefreshTokenGuard)
     @Get('refresh')
     refreshTokens(@Req() req: Request) {
-        const userId = req?.["user"]['sub'];
-        const refreshToken = req?.["user"]['refreshToken'];
-        return this.authService.refreshTokens(userId, refreshToken);
+        const userId = req?.headers.authorization;
+        return this.authService.refresh(userId);
     }
 }
