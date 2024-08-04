@@ -6,8 +6,7 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
-    constructor(private userService: UserService,
-        private jwtService: JwtService,) { }
+    constructor(private userService: UserService) { }
 
 
     refreshTokens(userId: any, refreshToken: any) {
@@ -19,7 +18,6 @@ export class AuthService {
     async signUp(createUserDto: CreateUserDto): Promise<{}> {
         return this.userService.create(createUserDto)
     }
-
 
     async signIn(data: Object) {
 
