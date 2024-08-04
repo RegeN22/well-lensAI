@@ -40,27 +40,35 @@ export class AuthService {
         if (userId == null) throw new UnauthorizedException();
         try {
             const userDb = await this.userService.findById(userId);
-            userDb.refreshTokens = userDb.refreshTokens.filter((t) => t !== refreshToken);
-            await userDb.save();
-            return "Logout succeeded";
-
+            if (
+                !userDb.refreshTokens ||
+                !userDb.refreshTokens.includes(refreshToken)
+            ) {
+                userDb.refreshTokens = [];
+                await userDb.save();
+                throw new UnauthorizedException();
+            } else {
+                userDb.refreshTokens = userDb.refreshTokens.filter(
+                    (t) => t !== refreshToken
+                );
+                await userDb.save();
+                return "Logout succeeded";
+            }
         } catch (error) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException(error.message);
         }
 
     }
 
-    async refresh(authHeader: string) {
-        const refreshToken = authHeader && authHeader.split(" ")[1]; // Bearer <token>
+    async refresh(userId: string, refreshToken: string) {
         if (refreshToken == null) throw new UnauthorizedException(401);
 
         try {
             const secret = this.configService.get("JWT_SECRET");
             const refreshSecret = this.configService.get("JWT_REFRESH_SECRET");
             const expiresIn = this.configService.get("JWT_EXPIRATION");
-            const user = this.jwtService.verify(refreshToken, { secret: refreshSecret });
 
-            const userDb = await this.userService.findById(user._id);
+            const userDb = await this.userService.findById(userId);
 
             if (
                 !userDb.refreshTokens ||
@@ -71,14 +79,14 @@ export class AuthService {
                 throw new UnauthorizedException("Refresh token invalid");
             }
             const accessToken = this.jwtService.sign(
-                { _id: user._id },
+                { _id: userId },
                 {
                     secret,
                     expiresIn
                 }
             );
             const newRefreshToken = this.jwtService.sign(
-                { _id: user._id },
+                { _id: userId },
                 { secret: refreshSecret }
             );
             userDb.refreshTokens = userDb.refreshTokens.filter(

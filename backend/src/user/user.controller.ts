@@ -1,7 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Controller } from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
+import { AccessTokenGuard } from 'src/auth/accessToken.guard';
 
-@Controller('/api/v1/user')
+@UseGuards(AccessTokenGuard)
+@Controller('user')
 export class UserController {
   constructor(
 

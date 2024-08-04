@@ -22,12 +22,12 @@ export class AuthController {
     @UseGuards(RefreshTokenGuard)
     @Get('logout')
     logout(@User() user) {
-        this.authService.logout(user._id, user.refreshToken);
+        return this.authService.logout(user._id, user.refreshToken);
     }
 
     @UseGuards(RefreshTokenGuard)
     @Get('refresh')
     refreshTokens(@User() user) {
-        return this.authService.refresh(user._id);
+        return this.authService.refresh(user._id, user.refreshToken);
     }
 }

@@ -3,12 +3,15 @@ import {
   Param,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { IRateProductResponse } from '../utils/gen-ai/types/gen-ai.interfaces';
 import { ScanService } from './scan.service';
+import { AccessTokenGuard } from 'src/auth/accessToken.guard';
 
+@UseGuards(AccessTokenGuard)
 @Controller('/scan')
 export class ScanController {
   constructor(private readonly scanServerice: ScanService) {}
