@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -18,6 +18,14 @@ export class UserService {
   }
 
   async create(user: CreateUserDto) {
+    if (Object.values(user).filter(e => !!e).length !== Object.keys(user).length) {
+      throw new BadRequestException("One required argument missing");
+    }
+    const rs = await this.userModel.find({ $or: [{ email: user.email }, { username: user.username }] });
+    if (rs != null) {
+      return new BadRequestException("Email or username already exists");
+    }
+
     const salt = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(user.password, salt);
     user.password = encryptedPassword;

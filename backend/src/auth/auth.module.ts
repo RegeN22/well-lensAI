@@ -4,8 +4,8 @@ import { AuthService } from './auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
-import { AccessTokenStrategy } from './accessToken.strategy';
-import { RefreshTokenStrategy } from './refreshToken.strategy';
+import { AccessTokenStrategy } from './guards/accessToken.strategy';
+import { RefreshTokenStrategy } from './guards/refreshToken.strategy';
 import { UserModule } from 'src/user/user.module';
 
 @Module({

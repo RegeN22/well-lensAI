@@ -12,7 +12,7 @@ import {
 import { HistoryService } from './history.service';
 import { History } from './history.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AccessTokenGuard } from 'src/auth/accessToken.guard';
+import { AccessTokenGuard } from 'src/auth/guards/accessToken.guard';
 
 type PostHistory = {
   userId: string,
