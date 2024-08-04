@@ -1,14 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { User, UserDocument } from '../user/user.schema';
 import GenAI from '../utils/gen-ai/gen-ai.util';
 import { IRateProductResponse } from '../utils/gen-ai/types/gen-ai.interfaces';
 import { uniqueItems } from '../utils/general.util';
 
 @Injectable()
 export class ScanService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor() {}
 
   /**
    * Scans a product by extracting ingredients from an image file and rating the product.
