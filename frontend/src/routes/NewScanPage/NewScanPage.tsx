@@ -8,6 +8,7 @@ import {
   ProductScanModel,
 } from "../../models/product-scan.model";
 import { scan } from "../../services/scan-service";
+import apiClient from "../../services/api-client";
 
 export default function NewScanPage(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
@@ -40,6 +41,13 @@ export default function NewScanPage(): JSX.Element {
     } else {
       setIngredients(scanResult.ingredients);
       setProduct(scanResult);
+
+      let data : FormData = new FormData();
+      data.append("file",picture);
+      data.append("userId","123");
+      data.append("jsonData",JSON.stringify(scanResult));
+
+      apiClient.post("/history",data,{headers: {"Content-Type":"multipart/form-data"}})
     }
   };
 

@@ -8,3 +8,25 @@ export interface ProductIngredientModel {
   rate: number;
   text: string;
 }
+
+export interface ProductFromHistoryModel {
+  _id: string;
+  __v: string; //wtf
+  userId: string;
+  image: ImageType;
+  jsonData: ProductScanModel;
+}
+
+export interface historyProductModel {
+  image: string;
+  jsonData:ProductScanModel
+}
+
+export interface ImageType {
+  fieldname:string
+  originalname:string
+  encoding:string
+  mimetype:string
+  buffer:string
+  size:number
+}

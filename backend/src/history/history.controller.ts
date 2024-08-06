@@ -26,7 +26,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
     @UseInterceptors(FileInterceptor('file'))
     async create(@UploadedFile() file: Express.Multer.File,
     @Body() body:PostHistory) {
-      let data : History = {image:file,userId:body.userId,jsonData:JSON.parse(body.jsonData),createdAt:new Date()}
+      let data : History = {image:file,userId:body.userId,jsonData:JSON.parse(JSON.stringify(body.jsonData)),createdAt:new Date()}
       return await this.historyService.create(data);
     }
   

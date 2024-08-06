@@ -1,0 +1,10 @@
+.history-products {
+    display: flex;
+    width: 25vw;
+    margin: auto !important;
+    margin-top: 10vh !important;  
+    gap: 20px;
+    background: #d8d8d8;
+    padding: 20px;
+    border-radius: 10px;
+}
