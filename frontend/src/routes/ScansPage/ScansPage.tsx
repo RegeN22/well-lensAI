@@ -8,7 +8,7 @@ import { useState,useEffect } from "react";
 import "./scan-page.css"
 
 const fabStyle: SxProps = {
-  position: 'absolute',
+  position: 'fixed',
   bottom: 16,
   right: 16,
 };
