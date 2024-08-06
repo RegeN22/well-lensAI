@@ -33,7 +33,7 @@ export default function ScansPage(): JSX.Element {
           image : URL.createObjectURL(blob),
           jsonData : newJsonData
         }
-        
+
         return newData;
       })
 
@@ -44,9 +44,11 @@ export default function ScansPage(): JSX.Element {
   
   return (
     <Stack sx={{margin: "1em"}} spacing={1} className="history-products">
-      {products?.map((product: historyProductModel) => (
+      {products ? products?.map((product: historyProductModel) => (
         <ScanDataListItem productImage={product?.image} product={JSON.parse(String(product?.jsonData))} />
-        ))}
+        ))
+        : <div>Begin Searching!</div>
+      }
       <Fab color="secondary" sx={fabStyle} onClick={() => navigate('new')}>
         <AddAPhotoIcon />
       </Fab>
