@@ -9,6 +9,7 @@ import {
 } from "../../models/product-scan.model";
 import { scan } from "../../services/scan-service";
 import apiClient from "../../services/api-client";
+import { motion } from "framer-motion"
 
 export default function NewScanPage(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,32 +53,54 @@ export default function NewScanPage(): JSX.Element {
   };
 
   return (
-    <Box sx={{ margin: "1em" }}>
-      {product ? (
-        <Stack direction={"column"} spacing={2}>
-          <ProductDescription
-            grade={product?.rate}
-            name={product?.name}
-            overallAssessment={product?.text}
-          />
-          <Ingredients ingredients={ingredients} />
-        </Stack>
-      ) : (
-        <Stack direction={"column"} spacing={3}>
-          <Typography variant="h4">Upload a picture of a product</Typography>
-          <PictureUpload onUpload={uploadPicture} />
-        </Stack>
-      )}
-      <Snackbar
-        open={isLoading}
-        message="Loading..."
-        key={"bottom_" + "left"}
-      />
-      <Snackbar
-        open={loadingError !== ""}
-        message={"An error has occured! Try again later. " + loadingError}
-        key={"bottom" + "left"}
-      />
-    </Box>
+    <motion.div       
+      variants={{ initial: {
+        x: '100vw', // Start outside the screen
+      },
+      animate: {
+        x: 0,
+        transition: {
+          duration: 0.5,
+        },
+      },
+      exit: {
+        x: '-100vw', // Swipe out to the left
+        transition: {
+          duration: 0.5,
+        },
+      },}}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      >
+      <Box sx={{ margin: "1em" }}>
+          {product ? (
+            <Stack direction={"column"} spacing={2}>
+              <ProductDescription
+                grade={product?.rate}
+                name={product?.name}
+                overallAssessment={product?.text}
+              />
+              <Ingredients ingredients={ingredients} />
+            </Stack>
+          ) : (
+            <Stack direction={"column"} spacing={3}>
+              <Typography variant="h4">Upload a picture of a product</Typography>
+              <PictureUpload onUpload={uploadPicture} />
+            </Stack>
+          )}
+        <Snackbar
+          open={isLoading}
+          message="Loading..."
+          key={"bottom_" + "left"}
+        />
+        <Snackbar
+          open={loadingError !== ""}
+          message={"An error has occured! Try again later. " + loadingError}
+          key={"bottom" + "left"}
+        />
+      </Box>  
+    </motion.div>
+   
   );
 }

@@ -6,6 +6,7 @@ import ScanDataListItem from "../../features/product-scan/ScanDataListItem/ScanD
 import apiClient from "../../services/api-client";
 import { useState,useEffect } from "react";
 import "./scan-page.css"
+import { motion } from "framer-motion"
 
 const fabStyle: SxProps = {
   position: 'fixed',
@@ -43,15 +44,44 @@ export default function ScansPage(): JSX.Element {
   },[])
   
   return (
-    <Stack sx={{margin: "1em"}} spacing={1} className="history-products">
-      {products ? products?.map((product: historyProductModel) => (
-        <ScanDataListItem productImage={product?.image} product={JSON.parse(String(product?.jsonData))} />
-        ))
-        : <div>Begin Searching!</div>
-      }
-      <Fab color="secondary" sx={fabStyle} onClick={() => navigate('new')}>
-        <AddAPhotoIcon />
-      </Fab>
-    </Stack>
+    <motion.div       
+    variants={{   
+      initial: {
+      y: "100vh",
+    },
+    animate: {
+      y: 0,
+      transition: {
+        duration: 1, // Adjust duration as needed
+      },
+    },
+    exit: {
+      x: '-100vw', // Swipe out to the left
+      transition: {
+        duration: 0.5,
+      },
+    }}}
+    initial="initial"
+    animate="animate"
+    exit="exit"
+    >
+      <div className="main-flex">
+      <Stack sx={{margin: "1em"}} spacing={1} className="history-products">
+        {products ? products?.map((product: historyProductModel) => (
+          <ScanDataListItem productImage={product?.image} product={JSON.parse(String(product?.jsonData))} />
+          ))
+          : <div>Begin Searching!</div>
+        }
+        <Fab color="secondary" sx={fabStyle} onClick={() => navigate('new')}>
+          <AddAPhotoIcon />
+        </Fab>
+      </Stack>
+        <div className="nav-bar">
+          <div>Welcome Back, user!</div>
+          <button>My Account</button>
+          <button>Settings</button>
+        </div>
+    </div>
+    </motion.div>
   );
 }

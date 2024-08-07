@@ -1,10 +1,25 @@
 .history-products {
     display: flex;
-    width: 25vw;
+    width: 70vw;
     margin: auto !important;
     margin-top: 10vh !important;  
     gap: 20px;
     background: #d8d8d8;
     padding: 20px;
     border-radius: 10px;
+}
+
+.nav-bar {
+    width: 15vw;
+    height: 100vh;
+    background-color: #ff758d;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 160%);
+    position: fixed;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.main-flex {
+    display: flex;
 }
