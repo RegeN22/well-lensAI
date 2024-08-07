@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
-import { Button, Paper, Stack } from "@mui/material";
-import React, { useRef, useState } from "react";
+import { Box, Button, Paper, Stack } from "@mui/material";
+import { DropzoneAreaBase } from "mui-file-dropzone";
+import { useRef, useState } from "react";
 
 interface Props {
   onUpload?: (picture: File) => void
@@ -22,8 +23,7 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
   const [pic, setPic] = useState('')
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onUploadPic = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file: File | undefined = event.target?.files?.[0];
+  const onUploadPicture = (file: File | undefined) => {
     if (file) {
       const picUrl: string = URL.createObjectURL(file);
       setPic(picUrl);
@@ -36,16 +36,27 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
   };
 
   return (<>
-    <Paper elevation={2} sx={{ padding: "0.5em" }}>
-      <Stack direction={"column"} spacing={2} alignItems={"center"}>
-        <label htmlFor="image-upload">
-          <Input ref={inputRef} type="file" accept="image/*" capture="environment" onChange={onUploadPic} />
-          <Button variant="contained" component="span" onClick={handleButtonClick}> Upload Image</Button>
-        </label>
-        {pic && (
-          <ImagePreview src={pic} alt="Preview" />
-        )}
-      </Stack>
+    <Paper elevation={2} sx={{ padding: "0.5em", height: '100%' }}>
+      {!pic && (
+        <>
+          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+            <DropzoneAreaBase fileObjects={[]} acceptedFiles={['image/*']}
+              filesLimit={1}
+              showPreviewsInDropzone={false}
+              dropzoneText={"Drag and drop an image here or click"}
+              onAdd={(files) => onUploadPicture(files?.[0]?.file)} />
+          </Box>
+          <Stack flexDirection="column" alignItems='center' sx={{ display: { xs: 'flex', md: 'none' }, padding: '2em' }}>
+            <label htmlFor="image-upload">
+              <Input ref={inputRef} type="file" accept="image/*" capture="environment" onChange={(e) => onUploadPicture(e?.target?.files?.[0])} />
+              <Button variant="contained" component="span" onClick={handleButtonClick}> Upload Image</Button>
+            </label>
+          </Stack>
+        </>
+      )}
+      {pic && (
+        <ImagePreview src={pic} alt="Preview" />
+      )}
     </Paper>
   </>);
 }

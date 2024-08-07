@@ -17,9 +17,9 @@ export interface ProductFromHistoryModel {
   jsonData: ProductScanModel;
 }
 
-export interface historyProductModel {
+export interface HistoryProductModel {
   image: string;
-  jsonData:ProductScanModel
+  jsonData:ProductScanModel;
 }
 
 export interface ImageType {

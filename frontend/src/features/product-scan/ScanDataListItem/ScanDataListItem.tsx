@@ -10,7 +10,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {useState} from "react"
+import { useState } from "react"
 import "./scan-item.css"
 interface Props {
   product: ProductScanModel;
@@ -33,14 +33,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function ScanDataListItem({product, productImage,onSelect}: Props): JSX.Element {
+export default function ScanDataListItem({ product, productImage, onSelect }: Props): JSX.Element {
   const [expanded, setExpanded] = useState(false);
 
   return (
     <Card>
       <CardHeader
         avatar={
-          <Grade grade={product.rate}/>
+          <Grade grade={product.rate} />
         }
         action={
           <IconButton aria-label="settings">
@@ -80,19 +80,21 @@ export default function ScanDataListItem({product, productImage,onSelect}: Props
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography paragraph>Ingredients:</Typography>
-          {product.ingredients.map(ingredient => {
-            return <>
-                <Grade grade={ingredient.rate}/>
-                <Typography paragraph>
+          <Typography variant="subtitle1">Ingredients:</Typography>
+          <Stack spacing={1}>
+            {product.ingredients.map(ingredient => {
+              return <Stack direction="row" alignItems="center" spacing={1}>
+                <Grade height="32px" width="32px" grade={ingredient.rate} />
+                <Typography variant="body2">
                   {ingredient.name}
                 </Typography>
-            </>
-          })}
+              </Stack>
+            })}
+          </Stack>
         </CardContent>
       </Collapse>
     </Card>
-    
+
     // <Paper sx={{padding: "0.25em"}} onClick={() => onSelect && onSelect()}>
     //   <Stack direction={"row"} spacing={2}>
     //     <Grade grade={product.rate}/>
