@@ -42,12 +42,12 @@ export default function NewScanPage(): JSX.Element {
       setIngredients(scanResult.ingredients);
       setProduct(scanResult);
 
-      let data : FormData = new FormData();
-      data.append("file",picture);
-      data.append("userId","123");
-      data.append("jsonData",JSON.stringify(scanResult));
+      const data: FormData = new FormData();
+      data.append("file", picture);
+      data.append("userId", "123");
+      data.append("jsonData", JSON.stringify(scanResult));
 
-      apiClient.post("/history",data,{headers: {"Content-Type":"multipart/form-data"}})
+      apiClient.post("/history", data, { headers: { "Content-Type": "multipart/form-data" } })
     }
   };
 
