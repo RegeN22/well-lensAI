@@ -5,9 +5,7 @@ import { History, HistoryDocument } from './history.schema';
 
 @Injectable()
 export class HistoryService {
-  constructor(
-    @InjectModel(History.name) private historyModel: Model<HistoryDocument>,
-  ) {}
+  constructor(@InjectModel(History.name) private historyModel: Model<HistoryDocument>) {}
 
   async create(historyData: History) {
     const createdHistory = new this.historyModel(historyData);
@@ -19,7 +17,7 @@ export class HistoryService {
     // return this.historyModel.find({ userId }).sort({ createdAt: -1 });
   }
 
-  async findOne(id: string): Promise<History> {
+  async findOne(id: string): Promise<History>{
     return this.historyModel.findById(id);
   }
 
