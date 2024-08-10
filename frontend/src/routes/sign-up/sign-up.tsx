@@ -2,26 +2,68 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Checkbox from "@mui/material/Checkbox";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { UserModel } from "../../models";
+import { registerUser } from "../../services/user-service";
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const form = new FormData(event.currentTarget);
+    const repeatPassword = form.get("repeat-password") as string;
+    const user: UserModel = {
+      email: form.get("email") as string,
+      username: form.get("username") as string,
+      password: form.get("password") as string,
+      firstName: form.get("firstName") as string,
+      lastName: form.get("lastName") as string,
+      imgUrl: "",
+    };
+
+    const isInvalid: boolean =
+      user.username === "" ||
+      user.firstName === "" ||
+      user.lastName === "" ||
+      user.email === "" ||
+      user.password === "" ||
+      repeatPassword === "";
+
+    const isPassInvalid: boolean = user.password !== repeatPassword;
+
+    if (isInvalid) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    if (isPassInvalid) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    let registeredUser: UserModel;
+
+    try {
+      registeredUser = await registerUser(user);
+      if (registeredUser) {
+        localStorage.setItem("currentUser", JSON.stringify(registeredUser));
+        navigate("/home");
+      } else {
+        alert("Something went wrong");
+      }
+    } catch (error) {
+      alert(
+        (error as { response: { data: { message: string } } })?.response?.data
+          ?.message ?? "Something went wrong"
+      );
+    }
   };
 
   return (
@@ -66,6 +108,17 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                autoComplete="username"
+                name="username"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
                 required
                 fullWidth
                 id="email"
@@ -86,9 +139,14 @@ export default function SignUp() {
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+              <TextField
+                required
+                fullWidth
+                name="repeat-password"
+                label="Repeat Password"
+                type="password"
+                id="password"
+                autoComplete="new-password"
               />
             </Grid>
           </Grid>
