@@ -27,7 +27,7 @@ export class User implements IPersonalInfo {
   allergies: string[];
 
   @Prop({ type: [String], required: false })
-  deceases: string[];
+  diseases: string[];
 
   @Prop(String)
   age?: number;

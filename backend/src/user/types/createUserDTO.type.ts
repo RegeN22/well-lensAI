@@ -14,6 +14,6 @@ export interface CreateUserDto {
     weight?: number;
     height?: number;
     allergies?: string[];
-    deceases?: string[];
+    diseases?: string[];
     imgUrl?: string;
 }
