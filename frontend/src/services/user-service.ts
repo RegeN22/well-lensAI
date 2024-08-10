@@ -18,7 +18,7 @@ export const refresh = async (token: string) => {
   return data;
 };
 
-export const registerUser = (user: UserModel) => {
+export const registerUser = (user: UserModel): Promise<UserModel> => {
   return new Promise<UserModel>((resolve, reject) => {
     apiClient
       .post("/auth/register", user)
