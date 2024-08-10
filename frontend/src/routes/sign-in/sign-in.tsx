@@ -10,8 +10,10 @@ import Grid from "@mui/material/Grid";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { GoogleLogin } from "@react-oauth/google";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { googleSignin } from "../../services/user-service";
 
 export default function SignIn() {
   const navigate = useNavigate();
@@ -74,6 +76,15 @@ export default function SignIn() {
           >
             Sign In
           </Button>
+          <GoogleLogin
+            onSuccess={async (credRes) => {
+              console.log(credRes);
+              const res = await googleSignin(credRes);
+              localStorage.setItem("currentUser", JSON.stringify(res));
+              res._id ? navigate("/home") : console.log(res);
+            }}
+            onError={() => console.log("Fuck")}
+          />
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
