@@ -25,15 +25,19 @@ export const scan = async (
 
   const currentUser: string | null = localStorage.getItem("currentUser");
   const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
-  const { data }: { data: ProductScanModel } = await apiClient.post(
-    `/scans${userId ? `/user/${userId}` : ""}`,
-    formData,
-    {
-      headers: { Authorization: `JWT ${accessToken}` },
-    }
-  );
+  try {
+    const { data }: { data: ProductScanModel } = await apiClient.post(
+      `/scans${userId ? `/user/${userId}` : ""}`,
+      formData,
+      {
+        headers: { Authorization: `JWT ${accessToken}` },
+      }
+    );
 
-  return data;
+    return data;
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const deleteScan = async (scan: ProductScanModel) => {

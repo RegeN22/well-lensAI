@@ -1,29 +1,35 @@
 import { RouterProvider } from "react-router-dom";
 import { appRouter } from "./routes/router.tsx";
-import { createTheme, CssBaseline, darkScrollbar, ThemeProvider, useMediaQuery } from "@mui/material";
+import {
+  createTheme,
+  CssBaseline,
+  darkScrollbar,
+  ThemeProvider,
+  useMediaQuery,
+} from "@mui/material";
 import { useMemo } from "react";
-import { lime, purple } from "@mui/material/colors";
+import { green, lime, purple } from "@mui/material/colors";
 
 function App() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
-          mode: prefersDarkMode ? 'dark' : 'light',
-          primary: lime,
-          secondary: purple,
+          mode: prefersDarkMode ? "dark" : "light",
+          primary: { main: "#404d44" },
+          secondary: { main: "#e3e4d7" },
         },
         components: {
           MuiCssBaseline: {
             styleOverrides: (themeParam) => ({
-              body: themeParam.palette.mode === 'dark' ? darkScrollbar() : null,
+              body: themeParam.palette.mode === "dark" ? darkScrollbar() : null,
             }),
           },
         },
       }),
-    [prefersDarkMode],
+    [prefersDarkMode]
   );
   return (
     <>
