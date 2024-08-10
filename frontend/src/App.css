@@ -1,3 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+body, html {
+    background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,.5)), url('https://cdhf.ca/wp-content/uploads/2023/01/fast-food.png') no-repeat center center fixed; 
+}
+
 .App {
   text-align: center;
 }

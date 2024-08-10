@@ -1,8 +1,9 @@
 import { RouterProvider } from "react-router-dom";
 import { appRouter } from "./routes/router.tsx";
 import { createTheme, CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
-import { useMemo } from "react";
+import { StrictMode, useMemo } from "react";
 import { lime, purple } from "@mui/material/colors";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -22,7 +23,11 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <RouterProvider router={appRouter} />
+        <GoogleOAuthProvider clientId="822580133929-qvu00mf93t8l72nkdh071vm6hptmgqf9.apps.googleusercontent.com">
+          <StrictMode>
+            <RouterProvider router={appRouter} />
+          </StrictMode>
+        </GoogleOAuthProvider>
       </ThemeProvider>
     </>
   );

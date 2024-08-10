@@ -4,7 +4,7 @@ import { refresh } from "./user-service";
 export { CanceledError };
 const apiClient = axios.create({
   // baseURL: process.env.SERVER_URL,
-  baseURL: 'http://localhost:3000/api/v1',
+  baseURL: 'http://localhost:3000/api',
 });
 
 apiClient.interceptors.response.use(

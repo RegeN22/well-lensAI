@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Box } from "@mui/material";
-
-
+import { Avatar } from "@mui/material";
 
 interface GradeProps extends Pick<React.ComponentProps<"div">,"className"> {
   grade: number,
