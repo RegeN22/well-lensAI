@@ -14,11 +14,8 @@ export class AuthController {
   }
 
   @Post('login')
-  signin(
-    @Body('username') username: string,
-    @Body('password') password: string,
-  ) {
-    return this.authService.login(username, password);
+  signin(@Body('email') email: string, @Body('password') password: string) {
+    return this.authService.login(email, password);
   }
 
   @Post('google')
@@ -26,14 +23,14 @@ export class AuthController {
     return this.authService.signInWithGoogle(credential);
   }
 
-  @UseGuards(RefreshTokenGuard)
   @Get('logout')
+  @UseGuards(RefreshTokenGuard)
   logout(@User() user) {
     return this.authService.logout(user._id, user.refreshToken);
   }
 
-  @UseGuards(RefreshTokenGuard)
   @Get('refresh')
+  @UseGuards(RefreshTokenGuard)
   refreshTokens(@User() user) {
     return this.authService.refresh(user._id, user.refreshToken);
   }

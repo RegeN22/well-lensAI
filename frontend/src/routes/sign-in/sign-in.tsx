@@ -13,17 +13,42 @@ import Typography from "@mui/material/Typography";
 import { GoogleLogin } from "@react-oauth/google";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import { googleSignin } from "../../services/user-service";
+import { googleSignin, loginUser } from "../../services/user-service";
 
 export default function SignIn() {
   const navigate = useNavigate();
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+  React.useEffect(() => {
+    const currentUser = localStorage.getItem("currentUser");
+    if (currentUser && JSON.parse(currentUser).username !== "default") {
+      navigate("/home");
+    }
+  }, []);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const form = new FormData(event.currentTarget);
+    const password: string = form.get("password") as string;
+    const email: string = form.get("email") as string;
+
+    if (!password || !email) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    try {
+      const user = await loginUser({ email, password });
+
+      if (user) {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        navigate("/home");
+      }
+    } catch (error) {
+      alert(
+        (error as { response: { data: { message: string } } })?.response?.data
+          ?.message ?? "Something went wrong"
+      );
+    }
   };
 
   return (

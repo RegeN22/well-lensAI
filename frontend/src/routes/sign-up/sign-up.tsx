@@ -15,6 +15,14 @@ import { registerUser } from "../../services/user-service";
 
 export default function SignUp() {
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const currentUser = localStorage.getItem("currentUser");
+    if (currentUser && JSON.parse(currentUser).username !== "default") {
+      navigate("/home");
+    }
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
