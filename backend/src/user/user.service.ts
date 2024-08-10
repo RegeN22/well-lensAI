@@ -8,7 +8,12 @@ import { User, UserDocument } from './user.schema';
 import * as bcrypt from 'bcrypt';
 @Injectable()
 export class UserService {
+
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>, private jwtService: JwtService, private configService: ConfigService) { }
+
+  async findOne(filter) {
+    return this.userModel.findOne(filter).exec();
+  }
 
   findById(_id: string) {
     return this.userModel.findById(_id).exec();
@@ -26,7 +31,7 @@ export class UserService {
       });
     }
 
- if (checkConflict != null && checkConflict._id != _id) {
+    if (checkConflict != null && checkConflict._id != _id) {
       throw new ConflictException("Email or username already in use");
     }
 
@@ -57,7 +62,7 @@ export class UserService {
     }
     const rs = await this.userModel.find({ $or: [{ email: user.email }, { username: user.username }] });
     if (rs != null) {
-      return new BadRequestException("Email or username already exists");
+      throw new BadRequestException("Email or username already exists");
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -65,8 +70,8 @@ export class UserService {
     user.password = encryptedPassword;
     const user1 = await this.userModel.create(user);
     const tokens = await this.generateTokens(user1);
-    const { email, firstName, lastName, username, _id } = user1;
-    return { email, firstName, lastName, username, _id, ...tokens };
+    const { email, firstName, lastName, username, _id, imgUrl } = user1;
+    return { email, firstName, lastName, username, _id, imgUrl, ...tokens };
   }
 
 

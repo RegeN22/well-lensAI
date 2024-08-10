@@ -36,6 +36,9 @@ export class User implements IPersonalInfo {
   gender?: string;
 
   @Prop(String)
+  imgUrl?: string;
+
+  @Prop(String)
   weight?: number;
 
   @Prop(String)
