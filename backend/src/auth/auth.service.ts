@@ -60,22 +60,24 @@ export class AuthService {
     return this.userService.create(user);
   }
 
-  async login(username: string, password: string) {
-    if (!username || !password) {
-      throw new UnauthorizedException('Missing username or password');
+  async login(email: string, password: string) {
+    if (!email || !password) {
+      throw new BadRequestException('Missing email or password');
     }
 
-    const user = await this.userService.findByUsernameOrEmail(username);
+    const user = await this.userService.findByUsernameOrEmail(email);
     if (user == null) {
-      throw new UnauthorizedException('Username or password incorrect');
+      throw new BadRequestException('Email or password incorrect');
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      throw new UnauthorizedException('Username or password incorrect');
+      throw new BadRequestException('Username or password incorrect');
     }
-    return await this.userService.generateTokens(user);
+
+    const tokens = await this.userService.generateTokens(user);
+    return { ...user, ...tokens };
   }
 
   async logout(userId: string, refreshToken: string) {
