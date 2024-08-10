@@ -9,4 +9,10 @@ export interface CreateUserDto {
     password: string;
     email: string;
     refreshToken?: string;
+    age?: number;
+    gender?: string;
+    weight?: number;
+    height?: number;
+    allergies?: string[];
+    deceases?: string[];
 }

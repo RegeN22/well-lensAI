@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -17,8 +17,42 @@ export class UserService {
     return this.userModel.findOne({ $or: [{ username }, { email: username }] }).exec();
   }
 
+  async update(_id: string, user: CreateUserDto) {
+    let checkConflict: UserDocument = null;
+
+    if (user.username || user.email) {
+      checkConflict = await this.userModel.findOne({
+        $or: [{ email: user.email }, { username: user.username }],
+      });
+    }
+
+ if (checkConflict != null && checkConflict._id != _id) {
+      throw new ConflictException("Email or username already in use");
+    }
+
+    if (user.password) {
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(user.password, salt);
+    }
+
+    try {
+      const updatedObj = await this.userModel.findOneAndUpdate({ _id }, user, {
+        new: true,
+      });
+
+      if (!updatedObj) {
+        throw new NotFoundException("Not found, update failed");
+      } else {
+        return updatedObj;
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+
   async create(user: CreateUserDto) {
-    if (Object.values(user).filter(e => !!e).length !== Object.keys(user).length) {
+    if (!user.email || !user.password || !user.username || !user.firstName || !user.lastName) {
       throw new BadRequestException("One required argument missing");
     }
     const rs = await this.userModel.find({ $or: [{ email: user.email }, { username: user.username }] });
@@ -34,6 +68,7 @@ export class UserService {
     const { email, firstName, lastName, username, _id } = user1;
     return { email, firstName, lastName, username, _id, ...tokens };
   }
+
 
   async generateTokens(user: UserDocument) {
     const accessToken = this.jwtService.sign({ _id: user._id }, {
