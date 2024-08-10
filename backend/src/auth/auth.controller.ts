@@ -19,6 +19,11 @@ export class AuthController {
         return this.authService.login(username, password);
     }
 
+    @Post('google')
+    signInWithGoogle(@Body("credential") credential: string) {
+        return this.authService.signInWithGoogle(credential);
+    }
+
     @UseGuards(RefreshTokenGuard)
     @Get('logout')
     logout(@User() user) {

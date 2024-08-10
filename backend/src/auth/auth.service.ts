@@ -1,15 +1,53 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from "bcrypt";
 import { CreateUserDto } from 'src/user/types/createUserDTO.type';
 import { UserService } from 'src/user/user.service';
-
+import { OAuth2Client } from "google-auth-library";
+const client = new OAuth2Client();
 @Injectable()
 export class AuthService {
-
     constructor(private userService: UserService, private jwtService: JwtService, private configService: ConfigService) { }
 
+    async signInWithGoogle(credential: string) {
+
+        try {
+            const ticket = await client.verifyIdToken({
+                idToken: credential,
+                audience: this.configService.get("GOOGLE_CLIENT_ID"),
+            });
+
+            const payload = ticket.getPayload();
+            const email = payload?.email;
+            let user;
+            if (email != null) {
+                user = await this.userService.findOne({ email: email });
+                if (user == null) {
+                    user = await this.userService.create({
+                        username: email,
+                        firstName: payload.given_name,
+                        lastName: payload.family_name,
+                        email: email,
+                        password: "0",
+                        imgUrl: payload?.picture,
+                    });
+                }
+                const tokens = await this.userService.generateTokens(user);
+                return {
+                    email: user.email,
+                    _id: user._id,
+                    imgUrl: user.imgUrl,
+                    username: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    ...tokens,
+                };
+            }
+        } catch (err) {
+            throw new BadRequestException(err.message);
+        }
+    }
 
     async register(user: CreateUserDto) {
         return this.userService.create(user);
