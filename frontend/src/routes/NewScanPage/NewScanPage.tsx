@@ -1,9 +1,14 @@
 import { Box, Snackbar, Stack, Typography } from "@mui/material";
-import { useCallback, useState } from "react";
-import { ProductIngredientModel, ProductScanModel } from "../../models/product-scan.model";
-import { ProductDescription } from "../../features/product-scan/ProductDescription/ProductDescription";
+import { useState } from "react";
 import { Ingredients } from "../../features/product-scan/IngredientsList/IngredientsList";
 import PictureUpload from "../../features/product-scan/PictureUpload/PictureUpload";
+import { ProductDescription } from "../../features/product-scan/ProductDescription/ProductDescription";
+import {
+  ProductIngredientModel,
+  ProductScanModel,
+} from "../../models/product-scan.model";
+import { scan } from "../../services/scan-service";
+import apiClient from "../../services/api-client";
 
 export default function NewScanPage(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,66 +17,57 @@ export default function NewScanPage(): JSX.Element {
   const [product, setProduct] = useState<ProductScanModel>();
 
   const uploadPicture = async (picture: File) => {
-    const formData = new FormData();
-    formData.append("file", picture);
-
     setIsLoading(true);
     setLoadingError("");
 
-    let data: ProductScanModel | null = null;
+    let scanResult: ProductScanModel | null = null;
     try {
-      const result = await fetch("http://localhost:3000/api/v1/scan", {
-        method: "POST",
-        body: formData,
-      });
-      data = await result.json();
+      scanResult = await scan(picture);
     } catch (err) {
       setLoadingError((err as Error).message);
     }
 
     setIsLoading(false);
 
-    if (!data || !data.ingredients || !data.rate || !data.name || !data.text) {
-      setLoadingError(loadingError + '\n' + "Incomplete response.");
+    if (
+      !scanResult ||
+      !scanResult.ingredients ||
+      !scanResult.rate ||
+      !scanResult.name ||
+      !scanResult.text
+    ) {
+      setLoadingError(loadingError + "\n" + "Incomplete response.");
       // TODO maybe create a function that tries it again or asks the user if they want to try again
     } else {
-      saveToHistory(data, formData);
-      setIngredients(data.ingredients);
-      setProduct(data);
+      setIngredients(scanResult.ingredients);
+      setProduct(scanResult);
+
+      let data : FormData = new FormData();
+      data.append("file",picture);
+      data.append("userId","123");
+      data.append("jsonData",JSON.stringify(scanResult));
+
+      apiClient.post("/history",data,{headers: {"Content-Type":"multipart/form-data"}})
     }
   };
 
-  const saveToHistory = useCallback(async (data: ProductScanModel, image: FormData) => {
-    await fetch("http://localhost:3000/api/v1/history", {
-      method: "POST",
-      body: JSON.stringify({
-        userId: "123",//TODO
-        image: image,
-        jsonData: data
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
-    })
-  }, [])
-
   return (
-    <Box sx={{margin: '1em'}}>
-      {product ?
-        (
-          <Stack direction={"column"} spacing={2}>
-            <ProductDescription
-              grade={product?.rate}
-              name={product?.name}
-              overallAssessment={product?.text} />
-            <Ingredients ingredients={ingredients} />
-          </Stack>
-        ) : 
+    <Box sx={{ margin: "1em" }}>
+      {product ? (
+        <Stack direction={"column"} spacing={2}>
+          <ProductDescription
+            grade={product?.rate}
+            name={product?.name}
+            overallAssessment={product?.text}
+          />
+          <Ingredients ingredients={ingredients} />
+        </Stack>
+      ) : (
         <Stack direction={"column"} spacing={3}>
           <Typography variant="h4">Upload a picture of a product</Typography>
           <PictureUpload onUpload={uploadPicture} />
         </Stack>
-      }
+      )}
       <Snackbar
         open={isLoading}
         message="Loading..."
