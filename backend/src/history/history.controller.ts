@@ -26,7 +26,6 @@ export class HistoryController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  @UseGuards(AccessTokenGuard)
   async create(
     @UploadedFile() file: Express.Multer.File,
     @Body() body: PostHistory,
@@ -46,13 +45,11 @@ export class HistoryController {
   }
 
   @Get(':id')
-  @UseGuards(AccessTokenGuard)
   async findOne(@Param('id') id: string) {
     return await this.historyService.findOne(id);
   }
 
   @Delete(':id')
-  @UseGuards(AccessTokenGuard)
   async remove(@Param('id') id: string) {
     return await this.historyService.remove(id);
   }

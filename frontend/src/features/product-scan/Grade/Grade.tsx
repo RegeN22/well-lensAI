@@ -3,8 +3,12 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import useTheme from "@mui/material/styles/useTheme";
 
+interface GradeProps {
+  grade:number
+}
+
 // GradientSVG Component: Defines the linear gradient for the CircularProgressbar
-const GradientSVG = ({ grade }) => {
+const GradientSVG = ({ grade }:GradeProps) => {
   const [color, setColor] = useState<string>("");
   const { palette } = useTheme();
   const errorColor: string =
@@ -72,7 +76,7 @@ const GradientSVG = ({ grade }) => {
 // };
 
 // Grade Component: Uses CircularProgressbar with custom styles and gradient
-export const Grade = ({ grade }) => {
+export const Grade = ({ grade }:GradeProps) => {
   const [color, setColor] = useState<string>("");
   const { palette } = useTheme();
   const errorColor: string =
