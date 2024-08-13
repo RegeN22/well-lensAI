@@ -19,7 +19,7 @@ export const appRouter = createBrowserRouter([
     element: <ScansPage />,
   },
   {
-    path: "/new",
+    path: "/home/new",
     element: <UploadPic />,
   },
 ]);

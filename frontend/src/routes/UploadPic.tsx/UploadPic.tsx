@@ -71,8 +71,10 @@ export default function UploadPic(): JSX.Element {
       scanResult = await scan(picture);
       console.log(scanResult);
     } catch (err) {
+      console.log("here");
       console.log(err);
-      // enqueueSnackbar(.message, { variant: "error" });
+
+      enqueueSnackbar("err?.message", { variant: "error" });
     }
 
     console.log(scanResult);
@@ -159,6 +161,7 @@ export default function UploadPic(): JSX.Element {
                 width: 300,
                 height: 300,
                 mt: 10,
+                border: 3,
               }}
               size="large"
               component="span"
@@ -171,6 +174,7 @@ export default function UploadPic(): JSX.Element {
             size="large"
             disabled={isLoading}
             sx={{ fontSize: "20px", mt: 10 }}
+            onClick={() => enqueueSnackbar("ddddd", { variant: "info" })}
           >
             Previous scans
           </Button>
