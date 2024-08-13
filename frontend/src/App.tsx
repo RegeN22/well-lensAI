@@ -18,8 +18,8 @@ function App() {
       createTheme({
         palette: {
           mode: prefersDarkMode ? "dark" : "light",
-          primary: { main: "#404d44" },
-          secondary: { main: "#e3e4d7" },
+          primary: { main: "#f2c738" },
+          secondary: { main: "#ceca80" },
         },
         components: {
           MuiCssBaseline: {
