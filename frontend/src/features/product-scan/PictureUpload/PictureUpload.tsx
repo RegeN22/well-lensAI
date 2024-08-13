@@ -35,7 +35,6 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
     inputRef.current?.click();
   };
 
-<<<<<<< HEAD
   return (
     <>
       {!pic && (
@@ -75,34 +74,7 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
           </Stack>
         </Box>
       )}
-      {false && <ImagePreview src={pic} alt="Preview" />}{" "}
+      {pic && <ImagePreview src={pic} alt="Preview" />}{" "}
     </>
   );
 }
-=======
-  return (<>
-    <Paper elevation={2} sx={{ padding: "0.5em", height: '100%' }}>
-      {!pic && (
-        <>
-          <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-            <DropzoneAreaBase fileObjects={[]} acceptedFiles={['image/*']}
-              filesLimit={1}
-              showPreviewsInDropzone={false}
-              dropzoneText={"Drag and drop an image here or click"}
-              onAdd={(files) => onUploadPicture(files?.[0]?.file)} />
-          </Box>
-          <Stack flexDirection="column" alignItems='center' sx={{ display: { xs: 'flex', md: 'none' }, padding: '2em' }}>
-            <label htmlFor="image-upload">
-              <Input ref={inputRef} type="file" accept="image/*" capture="environment" onChange={(e) => onUploadPicture(e?.target?.files?.[0])} />
-              <Button variant="contained" component="span" onClick={handleButtonClick}> Upload Image</Button>
-            </label>
-          </Stack>
-        </>
-      )}
-      {pic && (
-        <ImagePreview src={pic} alt="Preview" />
-      )}
-    </Paper>
-  </>);
-}
->>>>>>> 9b8be5cf6c94e05484f4aeffdce7840219a3d0ab

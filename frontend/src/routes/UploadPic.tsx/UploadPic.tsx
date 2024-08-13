@@ -20,9 +20,9 @@ import { ProductInfo } from "./ProductInfo";
 import { ProductIngridients } from "./ProductIngridients";
 import { log } from "console";
 import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
-export default function NewScanPage(): JSX.Element {
-
+export default function UploadPic(): JSX.Element {
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -64,7 +64,7 @@ export default function NewScanPage(): JSX.Element {
       navigate("/");
     }
   }, []);
-  
+
   const uploadPicture = async (picture: File) => {
     let scanResult: ProductScanModel | null = null;
     try {

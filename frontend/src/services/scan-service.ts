@@ -27,7 +27,7 @@ export const scan = async (
   const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
   try {
     const { data }: { data: ProductScanModel } = await apiClient.post(
-      `/scans${userId ? `/user/${userId}` : ""}`,
+      `/scan${userId ? `/user/${userId}` : ""}`,
       formData,
       {
         headers: { Authorization: `JWT ${accessToken}` },

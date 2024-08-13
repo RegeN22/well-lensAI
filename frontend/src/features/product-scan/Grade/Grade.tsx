@@ -38,12 +38,11 @@ const GradientSVG = ({ grade }) => {
           <stop offset="100%" stopColor={endColor} />
         </linearGradient>
       </defs>
-    </svg>)
-}
+    </svg>
+  );
+};
 // =======
 // import { Avatar, useTheme, Typography } from '@mui/material';
-
-
 
 // interface GradeProps extends Pick<React.ComponentProps<"div">, "className"> {
 //   grade: number,
