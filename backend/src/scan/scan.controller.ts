@@ -12,7 +12,7 @@ import { ScanService } from './scan.service';
 import { AccessTokenGuard } from 'src/auth/guards/accessToken.guard';
 
 @UseGuards(AccessTokenGuard)
-@Controller('/scan')
+@Controller('/scans')
 export class ScanController {
   constructor(private readonly scanServerice: ScanService) {}
 

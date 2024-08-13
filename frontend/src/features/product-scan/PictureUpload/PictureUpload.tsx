@@ -4,6 +4,7 @@ import { DropzoneAreaBase } from "mui-file-dropzone";
 import { useRef, useState } from "react";
 
 interface Props {
+  btnText?: string;
   onUpload?: (picture: File) => void
 }
 
@@ -19,7 +20,7 @@ const ImagePreview = styled('img')({
   marginTop: '16px',
 });
 
-export default function PictureUpload({ onUpload }: Props): JSX.Element {
+export default function PictureUpload({ btnText, onUpload }: Props): JSX.Element {
   const [pic, setPic] = useState('')
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -49,7 +50,7 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
           <Stack flexDirection="column" alignItems='center' sx={{ display: { xs: 'flex', md: 'none' }, padding: '2em' }}>
             <label htmlFor="image-upload">
               <Input ref={inputRef} type="file" accept="image/*" capture="environment" onChange={(e) => onUploadPicture(e?.target?.files?.[0])} />
-              <Button variant="contained" component="span" onClick={handleButtonClick}> Upload Image</Button>
+              <Button variant="contained" component="span" onClick={handleButtonClick}>{btnText ?? 'Upload Image'}</Button>
             </label>
           </Stack>
         </>

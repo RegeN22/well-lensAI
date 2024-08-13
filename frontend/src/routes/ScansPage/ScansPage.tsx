@@ -6,6 +6,7 @@ import ScanDataListItem from "../../features/product-scan/ScanDataListItem/ScanD
 import apiClient from "../../services/api-client";
 import { useState, useEffect } from "react";
 import NewScanPage from "../NewScanPage/NewScanPage";
+import UserSummaryCard from "../../features/user-profile/UserSummaryCard/UserSummaryCard";
 
 const fabStyle: SxProps = {
   position: 'fixed',
@@ -50,17 +51,20 @@ export default function ScansPage(): JSX.Element {
 
   return (
     <Stack direction={{ xs: "column", md: 'row' }} alignItems={{ xs: "center", md: 'start' }} sx={{ height: "100vh" }}>
-      <Box sx={{ height: "100%", overflowY: {xs: 'none', md: 'auto'} }}>
+      <Box sx={{ height: "100%", overflowY: { xs: 'none', md: 'auto' } }}>
         <Stack sx={{ padding: "1em", maxWidth: "30em" }} spacing={1} direction="column">
-          <Typography variant="h4">Previous searches</Typography>
+          <Box sx={{ paddingBottom: '1em' }}>
+            <UserSummaryCard isInteractive={true} />
+          </Box>
+          <Typography variant="h5">Products</Typography>
           {products ? products?.map((product: HistoryProductModel) => (
             <ScanDataListItem productImage={product?.image} product={product?.jsonData} />
           ))
-            : <Typography variant="h4">Begin Searching!</Typography>
+            : <Typography variant="h6">Begin Searching!</Typography>
           }
         </Stack>
       </Box>
-      <Fab color="secondary" sx={fabStyle} onClick={() => navigate('new')}>
+      <Fab color="secondary" sx={fabStyle} onClick={() => navigate('/new')}>
         <AddAPhotoIcon />
       </Fab>
       <Stack sx={{ display: { xs: 'none', md: 'block' }, flex: 1 }}>

@@ -1,6 +1,7 @@
 import { CredentialResponse } from "@react-oauth/google";
-import { EditUserModel, UserModel } from "../models";
+import { UserModel } from "../models";
 import apiClient from "./api-client";
+import { EditUserProfileModel } from "../models/edit-user-profile.model";
 
 // TODO: Create local storage service
 
@@ -77,14 +78,14 @@ export const getCurrentUser = async (accessToken: string) => {
   return data;
 };
 
-export const editProfile = async (userId: string, editUser: EditUserModel) => {
+export const editProfile = async (editUser: EditUserProfileModel) => {
   const currentUser: string | null = localStorage.getItem("currentUser");
   const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
 
   return new Promise((resolve, reject) => {
     apiClient
       .put(
-        `/users/${userId}`,
+        `/users/update`,
         { ...editUser },
         {
           headers: { Authorization: `JWT ${accessToken}` },
@@ -108,3 +109,16 @@ export const getUserById = async (userId: string) => {
 
   return data;
 };
+
+export const uploadAvatar = async (avatar: File): Promise<string> => {
+  const currentUser: string | null = localStorage.getItem("currentUser");
+  const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
+  const formData = new FormData();
+  formData.append("file", avatar);
+  const { data } = await apiClient.post(`/users/file`, {
+    formData,
+    headers: { Authorization: `JWT ${accessToken}` },
+  });
+
+  return data;
+}
