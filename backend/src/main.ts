@@ -1,14 +1,21 @@
-import { NestFactory } from '@nestjs/core';
+import { NestApplication, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { INestApplication, VersioningType } from '@nestjs/common';
 
-const corsOptions: CorsOptions = {
-  origin: ['http://localhost:3001', 'http://10.100.102.10:3001'], // Allow requests from this origin
-};
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors(corsOptions)
-  await app.listen(3000);
+  const app: INestApplication<any> = await NestFactory.create(AppModule);
+  app.enableCors();
+  app.setGlobalPrefix('api');
+  const config = new DocumentBuilder()
+    .setTitle('Well-LensAI API')
+    .setDescription('Well-LensAI API - only tochnitchanim allowed!')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  const port = process.env.PORT ?? 3000
+  await app.listen(port);
 }
 bootstrap();

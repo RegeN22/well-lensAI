@@ -168,7 +168,7 @@ function buildPersonalInfoPrompt(personalInfo?: IPersonalInfo): string {
   result += buildValuePropPrompt('Weight', personalInfo.weight, 'kg');
   result += buildValuePropPrompt('Height', personalInfo.height, 'cm');
   result += buildArrayPropPrompt('Allergies', personalInfo.allergies);
-  result += buildArrayPropPrompt('Deceases', personalInfo.deceases);
+  result += buildArrayPropPrompt('Diseases', personalInfo.diseases);
 
   return result;
 }
@@ -187,7 +187,7 @@ function validatePersonalInfo(personalInfo?: IPersonalInfo): boolean {
     !!personalInfo?.weight ||
     !!personalInfo?.height ||
     !!personalInfo?.allergies?.length ||
-    !!personalInfo?.deceases?.length
+    !!personalInfo?.diseases?.length
   );
 }
 

@@ -1,33 +1,37 @@
 import {
-  Controller,
-  Param,
-  Get,
   Body,
-  Post,
+  Controller,
   Delete,
-  UseInterceptors,
+  Get,
+  Param,
+  Post,
   UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
-import { HistoryService } from './history.service';
-import { History } from './history.schema';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { IRateProductResponse } from 'src/utils/gen-ai/types/gen-ai.interfaces';
+import { AccessTokenGuard } from 'src/auth/guards/accessToken.guard';
+import { IRateProductResponse } from '../utils/gen-ai/types/gen-ai.interfaces';
+import { History } from './history.schema';
+import { HistoryService } from './history.service';
 
 type PostHistory = {
-  userId: string,
-  jsonData: string
-}
+  userId: string;
+  jsonData: string;
+};
 
-
-@Controller('/api/v1/history')
+@Controller('history')
 export class HistoryController {
-  constructor(private readonly historyService: HistoryService) { }
+  constructor(private readonly historyService: HistoryService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async create(@UploadedFile() file: Express.Multer.File,
-    @Body() body: PostHistory) {
-    let data: History = {
+  @UseGuards(AccessTokenGuard)
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: PostHistory,
+  ) {
+    const data: History = {
       image: file,
       userId: body.userId,
       jsonData: JSON.parse(body.jsonData) as IRateProductResponse,
@@ -42,11 +46,13 @@ export class HistoryController {
   }
 
   @Get(':id')
+  @UseGuards(AccessTokenGuard)
   async findOne(@Param('id') id: string) {
     return await this.historyService.findOne(id);
   }
 
   @Delete(':id')
+  @UseGuards(AccessTokenGuard)
   async remove(@Param('id') id: string) {
     return await this.historyService.remove(id);
   }

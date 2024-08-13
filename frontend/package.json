@@ -4,7 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+<<<<<<< HEAD
     "dev": "vite --port 3001 --host",
+=======
+    "dev": "vite --port 5173 --host",
+>>>>>>> 9b8be5cf6c94e05484f4aeffdce7840219a3d0ab
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
@@ -13,6 +17,7 @@
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^5.0.13",
+<<<<<<< HEAD
     "@mui/icons-material": "^5.16.5",
     "@mui/lab": "^5.0.0-alpha.173",
     "@mui/material": "^5.16.0",
@@ -21,6 +26,13 @@
     "axios": "^1.6.5",
     "mui-file-dropzone": "^4.0.2",
     "notistack": "^3.0.1",
+=======
+    "@mui/icons-material": "^5.16.7",
+    "@mui/material": "^5.16.7",
+    "@react-oauth/google": "^0.12.1",
+    "axios": "^1.6.5",
+    "mui-file-dropzone": "^4.0.2",
+>>>>>>> 9b8be5cf6c94e05484f4aeffdce7840219a3d0ab
     "react": "^18.3.1",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.3.1",

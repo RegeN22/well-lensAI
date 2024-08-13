@@ -1,66 +1,59 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import dotenv from 'dotenv';
-import { User } from 'src/user/user.schema';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as multer from 'multer';
+import { AccessTokenGuard } from 'src/auth/guards/accessToken.guard';
+import { User } from 'src/auth/guards/user.decorator';
+import { CreateUserDto } from './types/createUserDTO.type';
 import { UserService } from './user.service';
 
-@Controller('/api/v1/user')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/');
+  },
+  filename: function (req, file, cb) {
+    const ext = file.originalname
+      .split('.')
+      .filter(Boolean) // removes empty extensions (e.g. `filename...txt`)
+      .slice(1)
+      .join('.');
+    cb(null, Date.now() + '.' + ext);
+  },
+});
+
+@UseGuards(AccessTokenGuard)
+@Controller('users')
 export class UserController {
   constructor(
-    private readonly userService: UserService,
-    private jwtService: JwtService,
+    private userService: UserService,
+    private configService: ConfigService,
   ) {}
 
-  @Post('/signup')
-  async Signup(@Res() response, @Body() user: User) {
-    console.log(user);
-    const newUSer = await this.userService.signup(user);
-    return response.status(HttpStatus.CREATED).json({
-      newUSer,
-    });
+  @Get('me')
+  @UseGuards(AccessTokenGuard)
+  async findOne(@User() userAuth) {
+    return await this.userService.findById(userAuth._id);
   }
 
-  @Post('/signin')
-  async SignIn(@Res() response, @Body() user: User) {
-    const token = await this.userService.signin(user, this.jwtService);
-    return response.status(HttpStatus.OK).json(token);
+  update(@User() userAuth, @Body('user') user: CreateUserDto) {
+    return this.userService.update(userAuth._id, user);
   }
 
-  async run(
-    ingredients = [
-      'water',
-      'milk',
-      'apple',
-      'banana',
-      'cement',
-      'lead',
-      'beer',
-    ],
-    allergies = ['milk'],
-  ) {
-    const genAI = new GoogleGenerativeAI(
-      'AIzaSyBzfw8a69jWdmLa46WdBesTLQzaEOQnmAw',
-    );
-    dotenv.config();
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
-    let onlyRating = 'answer with the number ONLY. no other words.';
-    let onlyRating2 =
-      "answer with the object, then ':', then the rating ONLY. no other words.";
-    let oneSentence =
-      'answer with only one sentence explaining it. no other words.';
-    let rateObject =
-      'rate the next objects on a 1-10 scale based on nutritional value and health cons.';
-    let allergicTo = 'including the fact that a person is allergic to ';
-    let allergiesInSentence =
-      allergies[0] !== 'nothing' ? `${allergicTo} ${allergies.join(',')}.` : '';
-    let currentObject = `the objects are ${ingredients.join(',')}.`;
-
-    const result = await model.generateContent([
-      `${rateObject}${onlyRating2}${allergiesInSentence}${currentObject}`,
-      // {inlineData: {data: Buffer.from(fs.readFileSync('path/to/image.png')).toString("base64"),
-      // mimeType: 'image/png'}}
-    ]);
-    console.log(result.response.text());
+  @Post('file')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage,
+    }),
+  )
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return this.configService.get('URL') + file.path;
   }
 }

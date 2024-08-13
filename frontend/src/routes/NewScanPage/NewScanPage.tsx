@@ -1,5 +1,6 @@
 import { Box, Snackbar, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Ingredients } from "../../features/product-scan/IngredientsList/IngredientsList";
 import PictureUpload from "../../features/product-scan/PictureUpload/PictureUpload";
 import { ProductDescription } from "../../features/product-scan/ProductDescription/ProductDescription";
@@ -7,14 +8,22 @@ import {
   ProductIngredientModel,
   ProductScanModel,
 } from "../../models/product-scan.model";
-import { scan } from "../../services/scan-service";
 import apiClient from "../../services/api-client";
+import { scan } from "../../services/scan-service";
 
 export default function NewScanPage(): JSX.Element {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingError, setLoadingError] = useState<string>("");
   const [ingredients, setIngredients] = useState<ProductIngredientModel[]>([]);
   const [product, setProduct] = useState<ProductScanModel>();
+
+  useEffect(() => {
+    const currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) {
+      navigate("/");
+    }
+  }, []);
 
   const uploadPicture = async (picture: File) => {
     setIsLoading(true);
@@ -47,7 +56,9 @@ export default function NewScanPage(): JSX.Element {
       data.append("userId", "123");
       data.append("jsonData", JSON.stringify(scanResult));
 
-      apiClient.post("/history", data, { headers: { "Content-Type": "multipart/form-data" } })
+      apiClient.post("/history", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
     }
   };
 

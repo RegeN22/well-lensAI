@@ -19,6 +19,13 @@ export default function ScansPage(): JSX.Element {
   const [products, setProducts] = useState<HistoryProductModel[]>();
 
   useEffect(() => {
+    const currentUser = localStorage.getItem("currentUser");
+    if (!currentUser) {
+      navigate("/");
+    }
+  }, []);
+
+  useEffect(() => {
     apiClient.get("/history").then(res => {
       const data: HistoryProductModel[] = res.data.map((obj: ProductFromHistoryModel) => {
         const binaryString = window.atob(obj.image.buffer);
