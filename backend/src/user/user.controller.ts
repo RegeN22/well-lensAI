@@ -29,7 +29,6 @@ const storage = multer.diskStorage({
   },
 });
 
-@UseGuards(AccessTokenGuard)
 @Controller('users')
 export class UserController {
   constructor(
@@ -38,7 +37,6 @@ export class UserController {
   ) {}
 
   @Get('me')
-  @UseGuards(AccessTokenGuard)
   async findOne(@User() userAuth) {
     return await this.userService.findById(userAuth._id);
   }

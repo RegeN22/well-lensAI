@@ -1,8 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import NewScanPage from "./NewScanPage/NewScanPage";
+import UploadPic from "./UploadPic.tsx/UploadPic";
 import ScansPage from "./ScansPage/ScansPage";
 import SignIn from "./sign-in/sign-in";
 import SignUp from "./sign-up/sign-up";
+import Layout from "./Layout";
 
 export const appRouter = createBrowserRouter([
   {
@@ -14,11 +16,16 @@ export const appRouter = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/home",
-    element: <ScansPage />,
-  },
-  {
-    path: "/new",
-    element: <NewScanPage />,
+    element: <Layout />,
+    children: [
+      {
+        path: "/home",
+        element: <ScansPage />,
+      },
+      {
+        path: "/home/new",
+        element: <UploadPic />,
+      },
+    ],
   },
 ]);
