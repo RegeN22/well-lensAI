@@ -21,6 +21,7 @@ import { ProductIngridients } from "./ProductIngridients";
 import { log } from "console";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 export default function UploadPic(): JSX.Element {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export default function UploadPic(): JSX.Element {
   const [loadingError, setLoadingError] = useState<string>("");
   const [ingredients, setIngredients] = useState<ProductIngredientModel[]>([]);
   const [product, setProduct] = useState<ProductScanModel>();
-  const [image, setImage] = useState<File>();
+  const [image, setImage] = useState<string>("");
 
   const handleUploadClick = (file: File | undefined) => {
     setIsLoading(true);
@@ -41,7 +42,7 @@ export default function UploadPic(): JSX.Element {
       reader.onloadend = () => {
         const imageUrl: string = URL.createObjectURL(file);
         // setImage(imageUrl);
-        setImage(file);
+        setImage(imageUrl);
         uploadPicture(file);
       };
       reader.readAsDataURL(file);
@@ -67,18 +68,23 @@ export default function UploadPic(): JSX.Element {
 
   const uploadPicture = async (picture: File) => {
     let scanResult: ProductScanModel | null = null;
+
     try {
       scanResult = await scan(picture);
       console.log(scanResult);
     } catch (err) {
-      console.log("here");
-      console.log(err);
-
-      enqueueSnackbar("err?.message", { variant: "error" });
+      const error = err as AxiosError;
+      console.log(error);
+      if (error?.response?.status === 400)
+        enqueueSnackbar("Bad request", { variant: "error" });
+      else if (error?.response?.status === 500)
+        enqueueSnackbar("Bad request", { variant: "error" });
+      else enqueueSnackbar("Unknown error", { variant: "error" });
     }
 
     console.log(scanResult);
     setIsLoading(false);
+    document.getElementById("upload-image").value = "";
 
     if (!scanResult) {
       enqueueSnackbar(loadingError + "\n" + "Incomplete response.", {
@@ -106,7 +112,6 @@ export default function UploadPic(): JSX.Element {
         display: "flex",
         alignItems: "center",
         flexDirection: "column",
-        mt: 10,
       }}
     >
       {product ? (
@@ -117,12 +122,15 @@ export default function UploadPic(): JSX.Element {
             flexDirection: "column",
             justifyContent: "center",
             gap: 2,
+            mt: 2,
           }}
         >
           <ProductInfo
             grade={product?.rate}
             name={product?.name}
             overallAssessment={product?.text}
+            ingridients={ingredients}
+            image={image}
           />
           <ProductIngridients ingredients={ingredients} />
         </Box>
@@ -134,9 +142,15 @@ export default function UploadPic(): JSX.Element {
             flexDirection: "column",
             justifyContent: "center",
             gap: 2,
+            mt: 10,
           }}
         >
-          <Typography variant="body1" textAlign="center">
+          <Typography
+            variant="h6"
+            textAlign="center"
+            color={"primary"}
+            fontWeight={"bold"}
+          >
             Upload a picture of the ingredients on the back of your product
           </Typography>
 
@@ -146,7 +160,9 @@ export default function UploadPic(): JSX.Element {
             id="upload-image"
             type="file"
             style={{ display: "none" }}
-            onChange={(e) => handleUploadClick(e?.target?.files[0])}
+            onChange={(e) => {
+              handleUploadClick(e?.target?.files[0]);
+            }}
           />
           <label htmlFor="upload-image">
             <LoadingButton
@@ -162,6 +178,7 @@ export default function UploadPic(): JSX.Element {
                 height: 300,
                 mt: 10,
                 border: 3,
+                backgroundColor: "rgba(255, 255, 255, 0.6)",
               }}
               size="large"
               component="span"
@@ -169,11 +186,10 @@ export default function UploadPic(): JSX.Element {
               <AddPhotoAlternateIcon fontSize="large" />
             </LoadingButton>
           </label>
-
           <Button
             size="large"
             disabled={isLoading}
-            sx={{ fontSize: "20px", mt: 10 }}
+            sx={{ fontSize: "20px", mt: 5 }}
             onClick={() => enqueueSnackbar("ddddd", { variant: "info" })}
           >
             Previous scans

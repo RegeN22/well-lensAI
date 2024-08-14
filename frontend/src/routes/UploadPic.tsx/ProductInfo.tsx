@@ -7,22 +7,57 @@ import {
   TextField,
   Typography,
   Collapse,
+  CardHeader,
+  CardMedia,
+  CardActions,
+  styled,
+  IconButtonProps,
+  Box,
 } from "@mui/material";
 import { Grade } from "../../features/product-scan/Grade/Grade";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import { ThemeContext } from "@emotion/react";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { ProductScanModel } from "../../models/product-scan.model";
+import useTheme from "@mui/material/styles/useTheme";
 
 interface ProductDescriptionProps {
   grade?: number;
   name?: string;
   overallAssessment?: string;
+  ingridients: any;
+  image: any;
 }
+
+interface Props {
+  product: ProductScanModel;
+  productImage: string;
+  onSelect?: () => void;
+}
+
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean;
+}
+
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
 export const ProductInfo = ({
   grade = 0,
   name = "The Product's name",
   overallAssessment = "overall",
+  ingridients,
+  image,
 }: ProductDescriptionProps) => {
   const [productName, setProductName] = useState<string>(name);
   const [editName, setEditName] = useState<boolean>(false);
@@ -32,47 +67,55 @@ export const ProductInfo = ({
     setEditName(false);
     // TODO: add changing name in db + loading till changed
   };
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <Stack
-      direction="column"
-      alignItems="center"
-      justifyContent="center"
-      spacing={2}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        width: "95%",
+      }}
     >
-      {editName ? (
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <TextField value={productName}>{name}</TextField>
-          <IconButton onClick={handleEditName}>
-            <CheckCircleOutlineRoundedIcon fontSize="large" />
-          </IconButton>
-        </Stack>
-      ) : (
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <Typography variant="h5">{productName}</Typography>
-          <IconButton
-            onClick={() => {
-              setEditName(true);
-            }}
-          >
-            <EditOutlinedIcon fontSize="large" />
-          </IconButton>
-        </Stack>
-      )}
-      <Grade grade={9} />
       <Card
-        variant="outlined"
-        onClick={() => setOpenDesc((open) => !open)}
-        sx={{ cursor: "pointer", width: "100%", borderRadius: 0 }}
+        sx={{
+          width: "100%",
+          borderRadius: 3,
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+        }}
+        elevation={0.5}
       >
-        <CardContent>
-          <Typography variant="h6">Description</Typography>
-          <Collapse in={!openDesc}>
-            <Typography variant="body2" color="textSecondary">
-              {overallAssessment}
-            </Typography>
-          </Collapse>
+        <CardContent
+          sx={{
+            display: "flex",
+            justifyContent: "space-around",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4">{name}</Typography>
+          <Grade grade={grade} />
         </CardContent>
       </Card>
-    </Stack>
+      <Card
+        elevation={0.5}
+        sx={{ borderRadius: 3, backgroundColor: "rgba(255, 255, 255, 0.9)" }}
+      >
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {overallAssessment}
+          </Typography>
+        </CardContent>
+      </Card>
+      <Card elevation={0.5} sx={{ borderRadius: 3 }}>
+        <CardMedia
+          component="img"
+          height="200"
+          className="card-image"
+          image={image} // Assuming productImage is a variable holding the image URL
+          alt="Product Image"
+        />
+      </Card>
+    </Box>
   );
 };

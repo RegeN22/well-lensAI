@@ -20,8 +20,11 @@ function App() {
       createTheme({
         palette: {
           mode: prefersDarkMode ? "dark" : "light",
-          primary: lime,
-          secondary: purple,
+          primary: { main: "#404d44" },
+          secondary: { main: "#eeffd0" },
+          error: { main: "#D64D4F" },
+          success: { main: "#318300" },
+          warning: { main: "#ffbf00" },
         },
         components: {
           MuiCssBaseline: {
@@ -37,7 +40,6 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <SnackbarProvider />
         <GoogleOAuthProvider clientId="822580133929-qvu00mf93t8l72nkdh071vm6hptmgqf9.apps.googleusercontent.com">
           <RouterProvider router={appRouter} />
         </GoogleOAuthProvider>

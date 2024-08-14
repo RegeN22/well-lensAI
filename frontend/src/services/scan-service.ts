@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { ProductScanModel, UserModel } from "../models";
 import apiClient from "./api-client";
 
@@ -36,7 +37,7 @@ export const scan = async (
 
     return data;
   } catch (err) {
-    throw err;
+    throw err as AxiosError;
   }
 };
 

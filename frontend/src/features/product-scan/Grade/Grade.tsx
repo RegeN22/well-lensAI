@@ -4,11 +4,11 @@ import "react-circular-progressbar/dist/styles.css";
 import useTheme from "@mui/material/styles/useTheme";
 
 interface GradeProps {
-  grade:number
+  grade: number;
 }
 
 // GradientSVG Component: Defines the linear gradient for the CircularProgressbar
-const GradientSVG = ({ grade }:GradeProps) => {
+const GradientSVG = ({ grade }: GradeProps) => {
   const [color, setColor] = useState<string>("");
   const { palette } = useTheme();
   const errorColor: string =
@@ -76,7 +76,7 @@ const GradientSVG = ({ grade }:GradeProps) => {
 // };
 
 // Grade Component: Uses CircularProgressbar with custom styles and gradient
-export const Grade = ({ grade }:GradeProps) => {
+export const Grade = ({ grade }: GradeProps) => {
   const [color, setColor] = useState<string>("");
   const { palette } = useTheme();
   const errorColor: string =
@@ -97,12 +97,12 @@ export const Grade = ({ grade }:GradeProps) => {
   }, [grade, errorColor, warningColor, successColor]);
 
   return (
-    <div style={{ width: 100, height: 100 }}>
+    <div style={{ width: 75, height: 75 }}>
       <CircularProgressbar
         value={grade * 10} // Multiply by 10 to scale the grade (assuming grade is 0-10)
         text={`${grade}`} // Display the grade as text inside the progress bar
         styles={buildStyles({
-          textSize: "24px",
+          textSize: "35px",
           pathColor: `url(#gradient)`, // Apply the gradient to the progress path
           textColor: color, // Text color
           trailColor: "rgba(255, 255, 255, 0.3)", // Trail color (slightly transparent white)

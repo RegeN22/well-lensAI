@@ -4,6 +4,7 @@ import UploadPic from "./UploadPic.tsx/UploadPic";
 import ScansPage from "./ScansPage/ScansPage";
 import SignIn from "./sign-in/sign-in";
 import SignUp from "./sign-up/sign-up";
+import Layout from "./Layout";
 
 export const appRouter = createBrowserRouter([
   {
@@ -15,11 +16,16 @@ export const appRouter = createBrowserRouter([
     element: <SignUp />,
   },
   {
-    path: "/home",
-    element: <ScansPage />,
-  },
-  {
-    path: "/home/new",
-    element: <UploadPic />,
+    element: <Layout />,
+    children: [
+      {
+        path: "/home",
+        element: <ScansPage />,
+      },
+      {
+        path: "/home/new",
+        element: <UploadPic />,
+      },
+    ],
   },
 ]);
