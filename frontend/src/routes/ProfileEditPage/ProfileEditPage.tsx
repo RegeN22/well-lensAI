@@ -14,7 +14,7 @@ export default function ProfileEditPage(): JSX.Element {
     setUnsavedProfile(profile as EditUserProfileModel);
   }, [profile]);
 
-  const addDesease = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const addDisease = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       const val: string = (e.target as HTMLInputElement).value;
@@ -24,7 +24,7 @@ export default function ProfileEditPage(): JSX.Element {
       (e.target as HTMLInputElement).value = '';
     }
   };
-  const deleteDesease = (name: string) => setUnsavedProfile({ ...unsavedProfile, diseases: unsavedProfile.diseases?.filter(d => d !== name) });
+  const deleteDisease = (name: string) => setUnsavedProfile({ ...unsavedProfile, diseases: unsavedProfile.diseases?.filter(d => d !== name) });
 
   const addAllergy = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -56,11 +56,11 @@ export default function ProfileEditPage(): JSX.Element {
         <form onSubmit={submitForm}>
           <Stack direction="column" spacing={3}>
             <FormControl>
-              <TextField label="Add Desease" onKeyDown={addDesease} />
+              <TextField label="Add Disease" onKeyDown={addDisease} />
               <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ margin: '0.5em' }}>
                 {unsavedProfile.diseases?.length
-                  ? unsavedProfile.diseases?.map(desease => (<Chip key={desease} label={desease} onDelete={() => deleteDesease(desease)} />))
-                  : <Typography variant='subtitle2'>No Deseases</Typography>}
+                  ? unsavedProfile.diseases?.map(disease => (<Chip key={disease} label={disease} onDelete={() => deleteDisease(disease)} />))
+                  : <Typography variant='subtitle2'>No Diseases</Typography>}
               </Stack>
             </FormControl>
             <FormControl>

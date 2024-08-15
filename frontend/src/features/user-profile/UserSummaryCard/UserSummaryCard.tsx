@@ -32,7 +32,7 @@ export default function UserSummaryCard({ isInteractive }: Props): JSX.Element {
         </IconButton> : undefined
       }
       title={`${profile?.firstName} ${profile?.lastName} @${profile?.username}`}
-      subheader={`${profile?.age ?? 'Unknown'} yo, ${profile?.gender ?? 'Gender Unknown'}, ${profile?.diseases?.length ?? 'Unknown'} Deseases, ${profile?.allergies?.length ?? 'Unknown'} Allergies`}
+      subheader={`${profile?.age ?? 'Unknown'} yo, ${profile?.gender ?? 'Gender Unknown'}, ${profile?.diseases?.length ?? 'Unknown'} Diseases, ${profile?.allergies?.length ?? 'Unknown'} Allergies`}
     />
   </Card>;
 }

@@ -1,21 +1,23 @@
 import React, { useState } from "react";
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
   Collapse,
-  IconButton,
   Typography,
   useTheme,
 } from "@mui/material";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { ProductIngredientModel } from "../../models";
 
-export const ProductIngridients = ({ ingredients }) => {
+interface ProductIngredientsProps {
+  ingredients: ProductIngredientModel[]
+}
+
+export const ProductIngridients = ({ ingredients } : ProductIngredientsProps) => {
   const { palette } = useTheme();
 
   // State to manage expanded items
-  const [expandedItem, setExpandedItem] = useState();
+  const [expandedItem, setExpandedItem] = useState<string|undefined>();
   const errorColor: string =
     palette.mode === "dark" ? palette.error.dark : palette.error.light;
   const warningColor: string =
@@ -23,11 +25,11 @@ export const ProductIngridients = ({ ingredients }) => {
   const successColor: string =
     palette.mode === "dark" ? palette.success.dark : palette.success.light;
   // Toggle expansion for a specific ingredient
-  const handleCardClick = (ingredient) => {
+  const handleCardClick = (ingredient: string) => {
     setExpandedItem(ingredient);
   };
 
-  const getColor = (grade) => {
+  const getColor = (grade: number) => {
     return grade === 0
       ? "black"
       : grade <= 4
@@ -44,7 +46,8 @@ export const ProductIngridients = ({ ingredients }) => {
         flexDirection: "column",
         alignItems: "center",
         mx: "auto",
-        width: "95%",
+        width: "85%",
+        gap: "10px"
       }}
     >
       {ingredients.map((ingredient) => (

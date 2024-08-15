@@ -75,7 +75,7 @@ export const ProductInfo = ({
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        width: "95%",
+        width: "85%",
       }}
     >
       <Card

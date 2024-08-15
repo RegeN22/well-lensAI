@@ -6,7 +6,7 @@ export function useCurrentUser(): [EditUserProfileModel | undefined, (profile: E
   const [profile, setProfile] = useState<EditUserProfileModel | undefined>(undefined);
   useEffect(() => {
     try {
-      const existingUserData = JSON.parse(localStorage.getItem('currentUser') ?? '')._doc;  // TODO find out why the object is so weird
+      const existingUserData = JSON.parse(localStorage.getItem('currentUser') ?? '');  // TODO find out why the object is so weird
       setProfile(existingUserData);
     } catch (e) {
       console.error(e);
