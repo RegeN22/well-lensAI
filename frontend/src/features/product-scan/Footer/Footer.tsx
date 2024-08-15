@@ -30,7 +30,7 @@ export default function Footer() {
       <CssBaseline />
       <Paper
         sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
-        elevation={0.5}
+        elevation={1}
       >
         <BottomNavigation
           showLabels
@@ -43,8 +43,7 @@ export default function Footer() {
             label="MY ACCOUNT"
             className="bottom-icon"
             icon={<PersonIcon />}
-            onClick={() => navigate("/profile")}
-            disabled
+            onClick={() => navigate("/edit-profile")}
           />
           <TabBarButton
             label="SCAN"

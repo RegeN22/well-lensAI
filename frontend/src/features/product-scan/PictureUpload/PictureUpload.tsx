@@ -1,10 +1,11 @@
 import styled from "@emotion/styled";
-import { Box, Button, Paper, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { DropzoneAreaBase } from "mui-file-dropzone";
 import { useRef, useState } from "react";
 
 interface Props {
-  onUpload?: (picture: File) => void;
+  btnText?: string;
+  onUpload?: (picture: File) => void
 }
 
 const Input = styled("input")({
@@ -19,8 +20,8 @@ const ImagePreview = styled("img")({
   marginTop: "16px",
 });
 
-export default function PictureUpload({ onUpload }: Props): JSX.Element {
-  const [pic, setPic] = useState("");
+export default function PictureUpload({ btnText, onUpload }: Props): JSX.Element {
+  const [pic, setPic] = useState('')
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onUploadPicture = (file: File | undefined) => {
@@ -63,12 +64,11 @@ export default function PictureUpload({ onUpload }: Props): JSX.Element {
                 onChange={(e) => onUploadPicture(e?.target?.files?.[0])}
               />
               <Button
-                variant="contained"
+                variant="outlined"
                 component="span"
                 onClick={handleButtonClick}
               >
-                {" "}
-                Upload Image
+                {btnText ?? 'Upload Image'}
               </Button>
             </label>
           </Stack>

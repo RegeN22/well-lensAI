@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -41,6 +42,8 @@ export class UserController {
     return await this.userService.findById(userAuth._id);
   }
 
+  @Put('update')
+  @UseGuards(AccessTokenGuard)
   update(@User() userAuth, @Body('user') user: CreateUserDto) {
     return this.userService.update(userAuth._id, user);
   }

@@ -4,6 +4,7 @@ import UploadPic from "./UploadPic.tsx/UploadPic";
 import ScansPage from "./ScansPage/ScansPage";
 import SignIn from "./sign-in/sign-in";
 import SignUp from "./sign-up/sign-up";
+import ProfileEditPage from "./ProfileEditPage/ProfileEditPage";
 import Layout from "./Layout";
 
 export const appRouter = createBrowserRouter([
@@ -26,6 +27,10 @@ export const appRouter = createBrowserRouter([
         path: "/home/new",
         element: <UploadPic />,
       },
+      {
+        path: '/edit-profile',
+        element: <ProfileEditPage />
+      }
     ],
   },
 ]);

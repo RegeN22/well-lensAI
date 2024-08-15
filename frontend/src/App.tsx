@@ -11,6 +11,7 @@ import { useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import { appRouter } from "./routes/router.tsx";
 import { SnackbarProvider } from "notistack";
+import bgImage from './assets/bg.png';
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -29,7 +30,10 @@ function App() {
         components: {
           MuiCssBaseline: {
             styleOverrides: (themeParam) => ({
-              body: themeParam.palette.mode === "dark" ? darkScrollbar() : null,
+              body: {
+                ...(themeParam.palette.mode === "dark" ? darkScrollbar() : {}),
+                backgroundImage: themeParam.palette.mode === "dark" ? 'none' : `url(${bgImage})`
+              },
             }),
           },
         },
