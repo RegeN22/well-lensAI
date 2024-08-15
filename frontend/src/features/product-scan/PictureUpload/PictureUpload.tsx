@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { Box, Button, Stack } from "@mui/material";
 import { DropzoneAreaBase } from "mui-file-dropzone";
 import { useRef, useState } from "react";
+import "./picture-upload.css"
 
 interface Props {
   btnText?: string;
@@ -10,14 +11,6 @@ interface Props {
 
 const Input = styled("input")({
   display: "none",
-});
-
-const ImagePreview = styled("img")({
-  width: "100%",
-  height: "auto",
-  borderRadius: "8px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  marginTop: "16px",
 });
 
 export default function PictureUpload({ btnText, onUpload }: Props): JSX.Element {
@@ -38,7 +31,7 @@ export default function PictureUpload({ btnText, onUpload }: Props): JSX.Element
 
   return (
     <>
-      {!pic && (
+      {pic && <img className="user-avatar" src={pic} alt="Preview" />}{" "}
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <Box sx={{ display: { xs: "none", md: "block" }, width: "500px" }}>
             <DropzoneAreaBase
@@ -73,8 +66,6 @@ export default function PictureUpload({ btnText, onUpload }: Props): JSX.Element
             </label>
           </Stack>
         </Box>
-      )}
-      {pic && <ImagePreview src={pic} alt="Preview" />}{" "}
     </>
   );
 }
