@@ -10,6 +10,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import { appRouter } from "./routes/router.tsx";
+import { SnackbarProvider } from "notistack";
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -19,8 +20,11 @@ function App() {
       createTheme({
         palette: {
           mode: prefersDarkMode ? "dark" : "light",
-          primary: lime,
-          secondary: purple,
+          primary: { main: "#404d44" },
+          secondary: { main: "#eeffd0" },
+          error: { main: "#D64D4F" },
+          success: { main: "#318300" },
+          warning: { main: "#ffbf00" },
         },
         components: {
           MuiCssBaseline: {

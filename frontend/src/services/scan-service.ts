@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { ProductScanModel, UserModel } from "../models";
 import apiClient from "./api-client";
 
@@ -25,15 +26,19 @@ export const scan = async (
 
   const currentUser: string | null = localStorage.getItem("currentUser");
   const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
-  const { data }: { data: ProductScanModel } = await apiClient.post(
-    `/scans${userId ? `/user/${userId}` : ""}`,
-    formData,
-    {
-      headers: { Authorization: `JWT ${accessToken}` },
-    }
-  );
+  try {
+    const { data }: { data: ProductScanModel } = await apiClient.post(
+      `/scan${userId ? `/user/${userId}` : ""}`,
+      formData,
+      {
+        headers: { Authorization: `JWT ${accessToken}` },
+      }
+    );
 
-  return data;
+    return data;
+  } catch (err) {
+    throw err as AxiosError;
+  }
 };
 
 export const deleteScan = async (scan: ProductScanModel) => {
