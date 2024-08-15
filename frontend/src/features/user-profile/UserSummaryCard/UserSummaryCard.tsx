@@ -1,5 +1,4 @@
 import { Avatar, Card, CardHeader, IconButton, useTheme } from "@mui/material";
-import { red } from "@mui/material/colors";
 import { AccountBox } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useCurrentUser } from "../../../hooks/user/useCurrentUser";
@@ -15,14 +14,15 @@ export default function UserSummaryCard({ isInteractive }: Props): JSX.Element {
   const mode = theme.palette.mode;
   const primaryBg = theme.palette.primary[mode];
   const secondaryBg = theme.palette.secondary[mode];
-  const fontColor = theme.palette.primary.contrastText;
+  const primaryFontColor = theme.palette.primary.contrastText;
+  const secondaryFontColor = theme.palette.secondary.contrastText;
 
-  return <Card sx={{ bgcolor: primaryBg, color: fontColor }}>
+  return <Card sx={{ bgcolor: secondaryBg, color: secondaryFontColor }}>
     <CardHeader
       avatar={
         profile?.imgUrl
           ? <Avatar src={profile.imgUrl}></Avatar>
-          : <Avatar sx={{ bgcolor: secondaryBg }}>
+          : <Avatar sx={{ bgcolor: primaryBg, color: primaryFontColor }}>
             {(profile?.firstName?.charAt(0) ?? '?') + (profile?.firstName?.charAt(0) ?? '?')}
           </Avatar>
       }

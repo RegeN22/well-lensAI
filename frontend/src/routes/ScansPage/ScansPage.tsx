@@ -64,9 +64,9 @@ export default function ScansPage(): JSX.Element {
           }
         </Stack>
       </Box>
-      <Fab color="secondary" sx={fabStyle} onClick={() => navigate('/new')}>
+      {/* <Fab color="secondary" sx={fabStyle} onClick={() => navigate('/new')}>
         <AddAPhotoIcon />
-      </Fab>
+      </Fab> */}
       <Stack sx={{ display: { xs: 'none', md: 'block' }, flex: 1 }}>
         <NewScanPage />
       </Stack>

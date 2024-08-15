@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, Button, Paper, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { DropzoneAreaBase } from "mui-file-dropzone";
 import { useRef, useState } from "react";
 
@@ -64,7 +64,7 @@ export default function PictureUpload({ btnText, onUpload }: Props): JSX.Element
                 onChange={(e) => onUploadPicture(e?.target?.files?.[0])}
               />
               <Button
-                variant="contained"
+                variant="outlined"
                 component="span"
                 onClick={handleButtonClick}
               >

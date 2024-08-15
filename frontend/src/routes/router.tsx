@@ -27,10 +27,10 @@ export const appRouter = createBrowserRouter([
         path: "/home/new",
         element: <UploadPic />,
       },
+      {
+        path: '/edit-profile',
+        element: <ProfileEditPage />
+      }
     ],
   },
-  {
-    path: '/edit-profile',
-    element: <ProfileEditPage />
-  }
 ]);
