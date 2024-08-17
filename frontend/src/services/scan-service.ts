@@ -7,10 +7,13 @@ import {
 } from "../models";
 import apiClient from "./api-client";
 
-export const getAllScans = async (): Promise<HistoryProductModel[]> => {
+export const getUserScans = async (): Promise<HistoryProductModel[]> => {
   const currentUser: string | null = localStorage.getItem("currentUser");
-  const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
-  const { data } = await apiClient.get("/scans", {
+  const { _id: userId, accessToken }: UserModel = currentUser
+    ? JSON.parse(currentUser)
+    : {};
+
+  const { data } = await apiClient.get(`/scans/user/${userId}`, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 
@@ -30,21 +33,6 @@ export const getAllScans = async (): Promise<HistoryProductModel[]> => {
 
     return newData;
   });
-};
-
-export const getUserScans = async (
-  userId: string
-): Promise<ProductScanModel[]> => {
-  const currentUser: string | null = localStorage.getItem("currentUser");
-  const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
-  const { data }: { data: ProductScanModel[] } = await apiClient.get(
-    `/scans/user/${userId}`,
-    {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }
-  );
-
-  return data;
 };
 
 export const getUserScan = async (

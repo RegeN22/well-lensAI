@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import ScanDataListItem from "../../features/product-scan/ScanDataListItem/ScanDataListItem";
 import UserSummaryCard from "../../features/user-profile/UserSummaryCard/UserSummaryCard";
 import { HistoryProductModel } from "../../models/product-scan.model";
-import { getAllScans } from "../../services/scan-service";
+import { getUserScans } from "../../services/scan-service";
 import NewScanPage from "../NewScanPage/NewScanPage";
 
 const fabStyle: SxProps = {
@@ -26,7 +26,7 @@ export default function ScansPage(): JSX.Element {
   }, [navigate]);
 
   useEffect(() => {
-    getAllScans().then((data) => {
+    getUserScans().then((data) => {
       setProducts(data);
     });
   }, []);
