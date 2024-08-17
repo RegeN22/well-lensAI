@@ -31,6 +31,7 @@ const storage = multer.diskStorage({
 });
 
 @Controller('users')
+@UseGuards(AccessTokenGuard)
 export class UserController {
   constructor(
     private userService: UserService,
@@ -43,7 +44,6 @@ export class UserController {
   }
 
   @Put('update')
-  @UseGuards(AccessTokenGuard)
   update(@User() userAuth, @Body('user') user: CreateUserDto) {
     return this.userService.update(userAuth._id, user);
   }

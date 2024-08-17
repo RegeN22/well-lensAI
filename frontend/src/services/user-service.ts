@@ -13,7 +13,7 @@ export const loginUser = async (user: Partial<UserModel>) => {
 
 export const refresh = async (token: string) => {
   const { data } = await apiClient.get("/auth/refresh", {
-    headers: { Authorization: `JWT ${token}` },
+    headers: { Authorization: `Bearer ${token}` },
   });
 
   return data;
@@ -38,7 +38,7 @@ export const logout = async () => {
     ? JSON.parse(currentUser)
     : {};
   const { data } = await apiClient.get("/auth/logout", {
-    headers: { Authorization: `JWT ${refreshToken}` },
+    headers: { Authorization: `Bearer ${refreshToken}` },
   });
 
   return data;
@@ -63,7 +63,7 @@ export const getUsers = async (search?: string) => {
   const { data } = await apiClient.get(
     `/users${search ? `?search=${search}` : ""}`,
     {
-      headers: { Authorization: `JWT ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     }
   );
 
@@ -72,7 +72,7 @@ export const getUsers = async (search?: string) => {
 
 export const getCurrentUser = async (accessToken: string) => {
   const { data } = await apiClient.get("/users/me", {
-    headers: { Authorization: `JWT ${accessToken}` },
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
 
   return data;
@@ -88,7 +88,7 @@ export const editProfile = async (editUser: EditUserProfileModel) => {
         `/users/update`,
         { ...editUser },
         {
-          headers: { Authorization: `JWT ${accessToken}` },
+          headers: { Authorization: `Bearer ${accessToken}` },
         }
       )
       .then((response: { data: UserModel }) => {
@@ -104,7 +104,7 @@ export const getUserById = async (userId: string) => {
   const currentUser: string | null = localStorage.getItem("currentUser");
   const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
   const { data } = await apiClient.get(`/users/${userId}`, {
-    headers: { Authorization: `JWT ${accessToken}` },
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
 
   return data;
@@ -117,7 +117,7 @@ export const uploadAvatar = async (avatar: File): Promise<string> => {
   formData.append("file", avatar);
   const { data } = await apiClient.post(`/users/file`, {
     formData,
-    headers: { Authorization: `JWT ${accessToken}` },
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
 
   return data;

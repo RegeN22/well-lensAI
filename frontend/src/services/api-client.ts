@@ -28,7 +28,7 @@ apiClient.interceptors.response.use(
           })
         );
 
-        originalRequest.headers["Authorization"] = `JWT ${res.accessToken}`;
+        originalRequest.headers["Authorization"] = `Bearer ${res.accessToken}`;
         return apiClient(originalRequest);
       }
     }

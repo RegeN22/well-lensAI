@@ -21,6 +21,7 @@ type PostHistory = {
 };
 
 @Controller('history')
+@UseGuards(AccessTokenGuard)
 export class HistoryController {
   constructor(private readonly historyService: HistoryService) {}
 

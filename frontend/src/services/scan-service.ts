@@ -10,7 +10,7 @@ export const getUserScans = async (
   const { data }: { data: ProductScanModel[] } = await apiClient.get(
     `/scans/user/${userId}`,
     {
-      headers: { Authorization: `JWT ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     }
   );
 
@@ -31,7 +31,7 @@ export const scan = async (
       `/scan${userId ? `/user/${userId}` : ""}`,
       formData,
       {
-        headers: { Authorization: `JWT ${accessToken}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
 
@@ -45,7 +45,7 @@ export const deleteScan = async (scan: ProductScanModel) => {
   const currentUser: string | null = localStorage.getItem("currentUser");
   const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
   const { data } = await apiClient.delete(`/scans/${scan._id}`, {
-    headers: { Authorization: `JWT ${accessToken}` },
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
 
   return data;
@@ -60,7 +60,7 @@ export const createComment = async (scanId: string, content: string) => {
     `/scans/${scanId}/comments`,
     { userImgUrl: imgUrl, content, username },
     {
-      headers: { Authorization: `JWT ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     }
   );
 
