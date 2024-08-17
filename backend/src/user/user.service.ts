@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
+import { isUndefined } from '../utils/general.util';
 import { CreateUserDto } from './types/createUserDTO.type';
 import { User, UserDocument } from './user.schema';
 @Injectable()
@@ -33,34 +34,66 @@ export class UserService {
       .exec();
   }
 
-  async update(_id: string, user: CreateUserDto) {
+  async update(
+    userId: string,
+    updateUser: Partial<CreateUserDto>,
+  ): Promise<UserDocument> {
     let checkConflict: UserDocument = null;
 
-    if (user.username || user.email) {
+    if (updateUser.username || updateUser.email) {
       checkConflict = await this.userModel.findOne({
-        $or: [{ email: user.email }, { username: user.username }],
+        $or: [{ email: updateUser.email }, { username: updateUser.username }],
+        $and: [{ _id: { $ne: userId } }],
       });
     }
 
-    if (checkConflict != null && checkConflict._id != _id) {
+    if (checkConflict) {
       throw new ConflictException('Email or username already in use');
     }
 
-    if (user.password) {
+    if (updateUser.password) {
       const salt = await bcrypt.genSalt(10);
-      user.password = await bcrypt.hash(user.password, salt);
+      updateUser.password = await bcrypt.hash(updateUser.password, salt);
     }
 
     try {
-      const updatedObj = await this.userModel.findOneAndUpdate({ _id }, user, {
-        new: true,
-      });
+      const updatedObj = await this.userModel.findByIdAndUpdate(
+        userId,
+        {
+          ...(!isUndefined(updateUser.firstName) && {
+            firstName: updateUser.firstName,
+          }),
+          ...(!isUndefined(updateUser.lastName) && {
+            lastName: updateUser.lastName,
+          }),
+          ...(!isUndefined(updateUser.username) && {
+            username: updateUser.username,
+          }),
+          ...(!isUndefined(updateUser.password) && {
+            email: updateUser.password,
+          }),
+          ...(!isUndefined(updateUser.allergies) && {
+            allergies: updateUser.allergies,
+          }),
+          ...(!isUndefined(updateUser.diseases) && {
+            diseases: updateUser.diseases,
+          }),
+          ...(!isUndefined(updateUser.age) && { age: updateUser.age }),
+          ...(!isUndefined(updateUser.gender) && { gender: updateUser.gender }),
+          ...(!isUndefined(updateUser.weight) && { weight: updateUser.weight }),
+          ...(!isUndefined(updateUser.height) && { height: updateUser.height }),
+          ...(!isUndefined(updateUser.imgUrl) && { imgUrl: updateUser.imgUrl }),
+        },
+        {
+          new: true,
+        },
+      );
 
       if (!updatedObj) {
         throw new NotFoundException('Not found, update failed');
-      } else {
-        return updatedObj;
       }
+
+      return updatedObj;
     } catch (err) {
       throw err;
     }
