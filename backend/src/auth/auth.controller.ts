@@ -29,6 +29,7 @@ export class AuthController {
   }
 
   @Get('refresh')
+  @UseGuards(RefreshTokenGuard)
   refreshTokens(@User() user) {
     return this.authService.refresh(user._id, user.refreshToken);
   }
