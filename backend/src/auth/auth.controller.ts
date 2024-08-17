@@ -24,6 +24,7 @@ export class AuthController {
   }
 
   @Get('logout')
+  @UseGuards(RefreshTokenGuard)
   logout(@User() user) {
     return this.authService.logout(user._id, user.refreshToken);
   }

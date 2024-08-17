@@ -64,7 +64,7 @@ export default function UploadPic(): JSX.Element {
     if (!currentUser) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const uploadPicture = async (picture: File) => {
     let scanResult: ProductScanModel | null = null;
@@ -94,15 +94,6 @@ export default function UploadPic(): JSX.Element {
     } else {
       setIngredients(scanResult.ingredients);
       setProduct(scanResult);
-
-      const data: FormData = new FormData();
-      data.append("file", picture);
-      data.append("userId", "123");
-      data.append("jsonData", JSON.stringify(scanResult));
-
-      apiClient.post("/history", data, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
     }
   };
 
