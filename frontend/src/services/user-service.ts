@@ -1,7 +1,7 @@
 import { CredentialResponse } from "@react-oauth/google";
 import { UserModel } from "../models";
-import apiClient from "./api-client";
 import { EditUserProfileModel } from "../models/edit-user-profile.model";
+import apiClient from "./api-client";
 
 // TODO: Create local storage service
 
@@ -78,7 +78,9 @@ export const getCurrentUser = async (accessToken: string) => {
   return data;
 };
 
-export const editProfile = async (editUser: EditUserProfileModel) => {
+export const editProfile = async (
+  editUser: EditUserProfileModel
+): Promise<UserModel> => {
   const currentUser: string | null = localStorage.getItem("currentUser");
   const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
 
@@ -121,4 +123,4 @@ export const uploadAvatar = async (avatar: File): Promise<string> => {
   });
 
   return data;
-}
+};

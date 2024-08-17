@@ -48,6 +48,12 @@ export class AuthService {
           username: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
+          age: user.age,
+          allergies: user.allergies,
+          diseases: user.diseases,
+          gender: user.gender,
+          height: user.height,
+          weight: user.weight,
           ...tokens,
         };
       }
