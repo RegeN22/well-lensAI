@@ -8,7 +8,11 @@ import {
 import apiClient from "./api-client";
 
 export const getAllScans = async (): Promise<HistoryProductModel[]> => {
-  const { data } = await apiClient.get("/scans");
+  const currentUser: string | null = localStorage.getItem("currentUser");
+  const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
+  const { data } = await apiClient.get("/scans", {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
 
   return data.map((obj: ProductFromHistoryModel) => {
     const binaryString = window.atob(obj.image.buffer);
