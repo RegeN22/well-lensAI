@@ -160,8 +160,8 @@ function buildPersonalInfoPrompt(personalInfo?: IPersonalInfo): string {
   }
 
   let result: string =
-    'Determine if a product is healthy for this specific person or not according to this list.';
-  result += '\nPAY ATTENTION to the health background of the person:';
+    'Determine if a product is healthy for me or not according to this list.';
+  result += '\nPAY ATTENTION to my health background:';
 
   result += buildValuePropPrompt('Age', personalInfo.age, 'years old');
   result += buildValuePropPrompt('Gender', personalInfo.gender);
