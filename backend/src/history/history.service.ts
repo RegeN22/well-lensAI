@@ -5,23 +5,32 @@ import { History, HistoryDocument } from './history.schema';
 
 @Injectable()
 export class HistoryService {
-  constructor(@InjectModel(History.name) private historyModel: Model<HistoryDocument>) {}
+  constructor(
+    @InjectModel(History.name) private historyModel: Model<HistoryDocument>,
+  ) {}
 
-  async create(historyData: History) {
-    const createdHistory = new this.historyModel(historyData);
+  async create(historyData: History): Promise<History> {
+    const createdHistory = new this.historyModel({
+      ...historyData,
+      createAt: Date.now(),
+    });
+
     return createdHistory.save();
   }
 
   async findAll(): Promise<History[]> {
     return this.historyModel.find();
-    // return this.historyModel.find({ userId }).sort({ createdAt: -1 });
   }
 
-  async findOne(id: string): Promise<History>{
-    return this.historyModel.findById(id);
+  async findByUser(userId: string): Promise<History[]> {
+    return this.historyModel.find({ userId });
   }
 
-  async remove(id: string) {
-    return this.historyModel.findByIdAndDelete(id);
+  async findOne(userId: string, id: string): Promise<History> {
+    return this.historyModel.findOne({ userId, id });
+  }
+
+  async remove(userId: string, id: string) {
+    return this.historyModel.findOneAndDelete({ userId, id });
   }
 }

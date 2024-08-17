@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HistoryService } from '../history/history.service';
 import GenAI from '../utils/gen-ai/gen-ai.util';
 import { IRateProductResponse } from '../utils/gen-ai/types/gen-ai.interfaces';
 import { uniqueItems } from '../utils/general.util';
 
 @Injectable()
 export class ScanService {
-  constructor() {}
+  constructor(private historyService: HistoryService) {}
 
   /**
    * Scans a product by extracting ingredients from an image file and rating the product.
@@ -20,17 +21,10 @@ export class ScanService {
     const result: IRateProductResponse = await GenAI.rateProduct(
       file,
       ingredients,
-      // {
-      //   age: 23,
-      //   height: 180,
-      //   gender: 'Male',
-      //   weight: 82,
-      //   allergies: ['Milk'],
-      //   deceases: ['Diabetes', 'Hypertension'],
-      // },
     );
+    result.name ??= 'unknown';
 
-    console.info(`Product '${result.name ?? 'unknown'}' scanned successfully`);
+    console.info(`Product '${result.name}' scanned successfully`);
     return result;
   }
 
@@ -67,10 +61,28 @@ export class ScanService {
     return ingredients;
   }
 
+  /**
+   * Scans a product for a user.
+   *
+   * @param userId - The ID of the user.
+   * @param file - The file to be scanned.
+   * @returns A promise that resolves to an object representing the result of the product scan.
+   */
   async scanProductForUser(
-    userId: number,
+    userId: string,
     file: Express.Multer.File,
   ): Promise<IRateProductResponse> {
-    return null;
+    console.info(`Got request to scan product for user '${userId}'`);
+
+    const result: IRateProductResponse = await this.scanProduct(file);
+
+    await this.historyService.create({
+      userId,
+      image: file,
+      jsonData: result,
+    });
+
+    console.info(`Product '${result.name}' scanned successfully`);
+    return result;
   }
 }
