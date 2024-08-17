@@ -23,7 +23,7 @@ export default function SignIn() {
     if (currentUser && JSON.parse(currentUser).username !== "default") {
       navigate("/home");
     }
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

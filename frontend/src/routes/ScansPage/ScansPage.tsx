@@ -1,18 +1,17 @@
-import { Box, Fab, Stack, SxProps, Typography } from "@mui/material";
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { ProductFromHistoryModel, HistoryProductModel } from "../../models/product-scan.model";
+import { Box, Stack, SxProps, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ScanDataListItem from "../../features/product-scan/ScanDataListItem/ScanDataListItem";
-import apiClient from "../../services/api-client";
-import { useState, useEffect } from "react";
-import NewScanPage from "../NewScanPage/NewScanPage";
 import UserSummaryCard from "../../features/user-profile/UserSummaryCard/UserSummaryCard";
+import { HistoryProductModel } from "../../models/product-scan.model";
+import { getUserScans } from "../../services/scan-service";
+import NewScanPage from "../NewScanPage/NewScanPage";
 
 const fabStyle: SxProps = {
-  position: 'fixed',
+  position: "fixed",
   bottom: 16,
   right: 16,
-  display: { xs: 'block', md: 'none' }
+  display: { xs: "block", md: "none" },
 };
 
 export default function ScansPage(): JSX.Element {
@@ -24,50 +23,46 @@ export default function ScansPage(): JSX.Element {
     if (!currentUser) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
-    apiClient.get("/history").then(res => {
-      const data: HistoryProductModel[] = res.data.map((obj: ProductFromHistoryModel) => {
-        const binaryString = window.atob(obj.image.buffer);
-        const arrayBuffer = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-          arrayBuffer[i] = binaryString.charCodeAt(i);
-        }
-
-        const blob = new Blob([arrayBuffer], { type: obj.image.mimetype });
-
-        const newData: HistoryProductModel = {
-          image: URL.createObjectURL(blob),
-          jsonData: obj.jsonData
-        }
-
-        return newData;
-      })
-
+    getUserScans().then((data) => {
       setProducts(data);
-    })
-  }, [])
+    });
+  }, []);
 
   return (
-    <Stack direction={{ xs: "column", md: 'row' }} alignItems={{ xs: "center", md: 'start' }} sx={{ height: "100vh" }}>
-      <Box sx={{ height: "100%", overflowY: { xs: 'none', md: 'auto' } }}>
-        <Stack sx={{ padding: "1em", maxWidth: "30em" }} spacing={1} direction="column">
-          <Box sx={{ paddingBottom: '1em' }}>
+    <Stack
+      direction={{ xs: "column", md: "row" }}
+      alignItems={{ xs: "center", md: "start" }}
+      sx={{ height: "100vh" }}
+    >
+      <Box sx={{ height: "100%", overflowY: { xs: "none", md: "auto" } }}>
+        <Stack
+          sx={{ padding: "1em", maxWidth: "30em" }}
+          spacing={1}
+          direction="column"
+        >
+          <Box sx={{ paddingBottom: "1em" }}>
             <UserSummaryCard isInteractive={true} />
           </Box>
           <Typography variant="h5">Products</Typography>
-          {products ? products?.map((product: HistoryProductModel) => (
-            <ScanDataListItem productImage={product?.image} product={product?.jsonData} />
-          ))
-            : <Typography variant="h6">Begin Searching!</Typography>
-          }
+          {products ? (
+            products?.map((product: HistoryProductModel) => (
+              <ScanDataListItem
+                productImage={product?.image}
+                product={product?.jsonData}
+              />
+            ))
+          ) : (
+            <Typography variant="h6">Begin Searching!</Typography>
+          )}
         </Stack>
       </Box>
       {/* <Fab color="secondary" sx={fabStyle} onClick={() => navigate('/new')}>
         <AddAPhotoIcon />
       </Fab> */}
-      <Stack sx={{ display: { xs: 'none', md: 'block' }, flex: 1 }}>
+      <Stack sx={{ display: { xs: "none", md: "block" }, flex: 1 }}>
         <NewScanPage />
       </Stack>
     </Stack>
