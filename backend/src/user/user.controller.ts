@@ -44,7 +44,7 @@ export class UserController {
   }
 
   @Put('update')
-  update(@User() userAuth, @Body('user') user: CreateUserDto) {
+  update(@User() userAuth, @Body() user: CreateUserDto) {
     return this.userService.update(userAuth._id, user);
   }
 
