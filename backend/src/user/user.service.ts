@@ -26,6 +26,7 @@ export class UserService {
   findById(_id: string) {
     return this.userModel.findById(_id).exec();
   }
+
   async findByUsernameOrEmail(username: string) {
     return this.userModel
       .findOne({ $or: [{ username }, { email: username }] })
