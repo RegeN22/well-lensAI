@@ -97,7 +97,7 @@ function processIngredients(ingredients: string[]): string[] {
     );
   }
 
-  return result;
+  return result.filter((item) => !!item?.length);
 }
 
 /**
