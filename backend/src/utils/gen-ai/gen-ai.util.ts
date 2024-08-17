@@ -58,23 +58,43 @@ async function getIngredientsFromImage(
  * @returns An array of strings representing the processed ingredients.
  */
 function processIngredients(ingredients: string[]): string[] {
-  const result: string[] = [];
+  const processed: string[] = [];
 
   for (const ingredient of ingredients) {
     if (ingredient) {
-      // const closeSplits: string[] = ingredient.split(')');
-      // for (const closeSplit of closeSplits) {
-      //   const openSplits: string[] = closeSplit.split('(');
-      //   const comaSplits: string[] = openSplits[0].split(',');
+      const trimedIngredient: string = ingredient.trim().toLocaleLowerCase();
+      const closeSplits: string[] = trimedIngredient.split(')');
 
-      //   if (comaSplits.length > 1) {
-      //     result.push(...comaSplits.slice(0, -1).map((item) => item.trim()));
+      for (const closeSplit of closeSplits) {
+        const openSplits: string[] = closeSplit.split('(');
+        const comaSplits: string[] = openSplits[0].split(',');
 
-      //   }
-      // }
+        if (comaSplits.length > 1) {
+          processed.push(...comaSplits.slice(0, -1).map((item) => item.trim()));
+        }
 
-      result.push(ingredient);
+        const lastIngredient: string = comaSplits[comaSplits.length - 1].trim();
+        const brackets = openSplits[1]?.trim();
+        processed.push(
+          `${lastIngredient}${brackets?.length ? ` (${brackets})` : ''}`,
+        );
+      }
     }
+  }
+
+  const result: string[] = [];
+  for (const ingredient of processed) {
+    let splitIngredient: string[] = ingredient.split(' ');
+
+    if (splitIngredient[0].trim() === 'and') {
+      splitIngredient = splitIngredient.slice(1);
+    }
+
+    const processedIngredient: string = splitIngredient.join(' ');
+    result.push(
+      processedIngredient.charAt(0).toUpperCase() +
+        processedIngredient.slice(1),
+    );
   }
 
   return result;
