@@ -90,7 +90,7 @@ function processIngredients(ingredients: string[]): string[] {
       splitIngredient = splitIngredient.slice(1);
     }
 
-    const processedIngredient: string = splitIngredient.join(' ');
+    const processedIngredient: string = splitIngredient.join(' ').trim();
     result.push(
       processedIngredient.charAt(0).toUpperCase() +
         processedIngredient.slice(1),
