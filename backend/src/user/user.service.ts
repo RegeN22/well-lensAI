@@ -18,7 +18,7 @@ export class UserService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private jwtService: JwtService,
     private configService: ConfigService,
-  ) {}
+  ) { }
 
   async findOne(filter) {
     return this.userModel.findOne(filter).exec();
@@ -31,7 +31,7 @@ export class UserService {
   async findByUsernameOrEmail(username: string) {
     return this.userModel
       .findOne({ $or: [{ username }, { email: username }] })
-      .exec();
+      .lean();
   }
 
   async update(

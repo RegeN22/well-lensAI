@@ -6,6 +6,7 @@ import UserSummaryCard from "../../features/user-profile/UserSummaryCard/UserSum
 import { HistoryProductModel } from "../../models/product-scan.model";
 import { getUserScans } from "../../services/scan-service";
 import NewScanPage from "../NewScanPage/NewScanPage";
+import { useCurrentUser } from "../../hooks/user/useCurrentUser";
 
 const fabStyle: SxProps = {
   position: "fixed",
@@ -16,6 +17,7 @@ const fabStyle: SxProps = {
 
 export default function ScansPage(): JSX.Element {
   const navigate = useNavigate();
+  const [profile] = useCurrentUser();
   const [products, setProducts] = useState<HistoryProductModel[]>();
 
   useEffect(() => {
@@ -35,7 +37,6 @@ export default function ScansPage(): JSX.Element {
     <Stack
       direction={{ xs: "column", md: "row" }}
       alignItems={{ xs: "center", md: "start" }}
-      sx={{ height: "100vh" }}
     >
       <Box sx={{ height: "100%", overflowY: { xs: "none", md: "auto" } }}>
         <Stack
@@ -44,7 +45,7 @@ export default function ScansPage(): JSX.Element {
           direction="column"
         >
           <Box sx={{ paddingBottom: "1em" }}>
-            <UserSummaryCard isInteractive={true} />
+            <UserSummaryCard user={profile} isInteractive={true} />
           </Box>
           <Typography variant="h5">Products</Typography>
           {products ? (

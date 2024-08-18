@@ -2,8 +2,6 @@ import {
   Box,
   Button,
   CircularProgress,
-  imageListClasses,
-  Stack,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -12,14 +10,11 @@ import {
   ProductScanModel,
 } from "../../models/product-scan.model";
 import { scan } from "../../services/scan-service";
-import apiClient from "../../services/api-client";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import { LoadingButton } from "@mui/lab";
 import { useSnackbar } from "notistack";
 import { ProductInfo } from "./ProductInfo";
 import { ProductIngridients } from "./ProductIngridients";
-import { log } from "console";
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 

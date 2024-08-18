@@ -23,14 +23,13 @@ export function useCurrentUser(): [
   const updateProfile = (newProfileData: EditUserProfileModel) => {
     editProfile(newProfileData).then((data) => {
       const currentUser = JSON.parse(localStorage.getItem("currentUser") ?? "");
-      localStorage.setItem(
-        "currentUser",
-        JSON.stringify({
-          ...data,
-          refreshToken: currentUser.refreshToken,
-          accessToken: currentUser.accessToken,
-        })
-      );
+      const updatedUser = {
+        ...data,
+        refreshToken: currentUser.refreshToken,
+        accessToken: currentUser.accessToken,
+      };
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      setProfile(updatedUser as EditUserProfileModel);
     });
   };
 

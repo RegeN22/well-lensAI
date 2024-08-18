@@ -94,21 +94,21 @@ export default function ProfileEditPage(): JSX.Element {
   };
 
   return unsavedProfile ? (
-    <Stack sx={{ margin: "0.5em" }} direction="column" spacing={2}>
-      <UserSummaryCard isInteractive={false} />
+    <Stack sx={{ margin: "1em" }} direction="column" spacing={1}>
+      <UserSummaryCard user={profile} isInteractive={false} />
       <PictureUpload btnText="Change Avatar" onUpload={changeAvatar} />
 
       <Paper elevation={1} sx={{ padding: "1em" }}>
         <form onSubmit={submitForm}>
           <Stack direction="column" spacing={3}>
             <FormControl>
-              <TextField label="Add Disease" onKeyDown={addDisease} />
+              <TextField label="Add Condition" onKeyDown={addDisease} />
               <Stack
                 direction="row"
                 spacing={1}
                 flexWrap="wrap"
                 useFlexGap
-                sx={{ margin: "0.5em" }}
+                sx={{ margin: "0.5em 0" }}
               >
                 {unsavedProfile.diseases?.length ? (
                   unsavedProfile.diseases?.map((disease) => (
@@ -119,7 +119,7 @@ export default function ProfileEditPage(): JSX.Element {
                     />
                   ))
                 ) : (
-                  <Typography variant="subtitle2">No Diseases</Typography>
+                  <Typography variant="subtitle2">No Conditions</Typography>
                 )}
               </Stack>
             </FormControl>
@@ -130,7 +130,7 @@ export default function ProfileEditPage(): JSX.Element {
                 spacing={1}
                 flexWrap="wrap"
                 useFlexGap
-                sx={{ margin: "0.5em" }}
+                sx={{ margin: "0.5em 0" }}
               >
                 {unsavedProfile.allergies?.length ? (
                   unsavedProfile.allergies?.map((allergy) => (

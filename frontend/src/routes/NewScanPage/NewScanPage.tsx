@@ -8,7 +8,6 @@ import {
   ProductIngredientModel,
   ProductScanModel,
 } from "../../models/product-scan.model";
-import apiClient from "../../services/api-client";
 import { scan } from "../../services/scan-service";
 
 export default function NewScanPage(): JSX.Element {

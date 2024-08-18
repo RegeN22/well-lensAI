@@ -84,7 +84,7 @@ export const ProductInfo = ({
           borderRadius: 3,
           backgroundColor: "rgba(255, 255, 255, 0.8)",
         }}
-        elevation={0.5}
+        elevation={1}
       >
         <CardContent
           sx={{
@@ -98,7 +98,7 @@ export const ProductInfo = ({
         </CardContent>
       </Card>
       <Card
-        elevation={0.5}
+        elevation={1}
         sx={{ borderRadius: 3, backgroundColor: "rgba(255, 255, 255, 0.9)" }}
       >
         <CardContent>
@@ -107,7 +107,7 @@ export const ProductInfo = ({
           </Typography>
         </CardContent>
       </Card>
-      <Card elevation={0.5} sx={{ borderRadius: 3 }}>
+      <Card elevation={1} sx={{ borderRadius: 3 }}>
         <CardMedia
           component="img"
           height="200"
