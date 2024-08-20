@@ -1,6 +1,6 @@
 import {
   Button,
-  Chip,
+  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -10,15 +10,15 @@ import {
   RadioGroup,
   Stack,
   TextField,
-  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PictureUpload from "../../features/product-scan/PictureUpload/PictureUpload";
-import UserSummaryCard from "../../features/user-profile/UserSummaryCard/UserSummaryCard";
 import { useCurrentUser } from "../../hooks/user/useCurrentUser";
 import { EditUserProfileModel } from "../../models/edit-user-profile.model";
 import { uploadAvatar } from "../../services/user-service";
+import UserAvatar from "../../features/user-profile/UserAvatar/UserAvatar";
+import { MuiChipsInput } from "mui-chips-input";
 
 export default function ProfileEditPage(): JSX.Element {
   const navigate = useNavigate();
@@ -38,50 +38,6 @@ export default function ProfileEditPage(): JSX.Element {
     setUnsavedProfile(profile as EditUserProfileModel);
   }, [profile]);
 
-  const addDisease = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const val: string = (e.target as HTMLInputElement).value;
-      if (val?.length && !unsavedProfile.diseases?.includes(val)) {
-        setUnsavedProfile({
-          ...unsavedProfile,
-          diseases: [
-            ...(unsavedProfile.diseases ?? []),
-            (e.target as HTMLInputElement).value,
-          ],
-        });
-      }
-      (e.target as HTMLInputElement).value = "";
-    }
-  };
-  const deleteDisease = (name: string) =>
-    setUnsavedProfile({
-      ...unsavedProfile,
-      diseases: unsavedProfile.diseases?.filter((d) => d !== name),
-    });
-
-  const addAllergy = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const val: string = (e.target as HTMLInputElement).value;
-      if (val?.length && !unsavedProfile.allergies?.includes(val)) {
-        setUnsavedProfile({
-          ...unsavedProfile,
-          allergies: [
-            ...(unsavedProfile.allergies ?? []),
-            (e.target as HTMLInputElement).value,
-          ],
-        });
-      }
-      (e.target as HTMLInputElement).value = "";
-    }
-  };
-  const deleteAllergy = (name: string) =>
-    setUnsavedProfile({
-      ...unsavedProfile,
-      allergies: unsavedProfile.allergies?.filter((a) => a !== name),
-    });
-
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateProfile(unsavedProfile);
@@ -94,58 +50,15 @@ export default function ProfileEditPage(): JSX.Element {
   };
 
   return unsavedProfile ? (
-    <Stack sx={{ margin: "1em" }} direction="column" spacing={1}>
-      <UserSummaryCard user={profile} isInteractive={false} />
-      <PictureUpload btnText="Change Avatar" onUpload={changeAvatar} />
-
-      <Paper elevation={1} sx={{ padding: "1em" }}>
+    <Paper elevation={1} sx={{ margin: "1em" }}>
+      <Stack sx={{ padding: "1em" }} direction="column" spacing={3}>
+        <Stack direction='row' justifyContent='center' alignItems='center'>
+          <UserAvatar user={profile} size="56px" />
+          <PictureUpload btnText="Change Avatar" onUpload={changeAvatar} />
+        </Stack>
+        <Divider />
         <form onSubmit={submitForm}>
           <Stack direction="column" spacing={3}>
-            <FormControl>
-              <TextField label="Add Condition" onKeyDown={addDisease} />
-              <Stack
-                direction="row"
-                spacing={1}
-                flexWrap="wrap"
-                useFlexGap
-                sx={{ margin: "0.5em 0" }}
-              >
-                {unsavedProfile.diseases?.length ? (
-                  unsavedProfile.diseases?.map((disease) => (
-                    <Chip
-                      key={disease}
-                      label={disease}
-                      onDelete={() => deleteDisease(disease)}
-                    />
-                  ))
-                ) : (
-                  <Typography variant="subtitle2">No Conditions</Typography>
-                )}
-              </Stack>
-            </FormControl>
-            <FormControl>
-              <TextField label="Add Allergy" onKeyDown={addAllergy} />
-              <Stack
-                direction="row"
-                spacing={1}
-                flexWrap="wrap"
-                useFlexGap
-                sx={{ margin: "0.5em 0" }}
-              >
-                {unsavedProfile.allergies?.length ? (
-                  unsavedProfile.allergies?.map((allergy) => (
-                    <Chip
-                      key={allergy}
-                      label={allergy}
-                      onDelete={() => deleteAllergy(allergy)}
-                    />
-                  ))
-                ) : (
-                  <Typography variant="subtitle2">No Allergies</Typography>
-                )}
-              </Stack>
-            </FormControl>
-
             <TextField
               required
               label="First Name"
@@ -245,13 +158,27 @@ export default function ProfileEditPage(): JSX.Element {
                 }
               />
             </Stack>
+            <MuiChipsInput
+              value={unsavedProfile.diseases ?? []}
+              hideClearAll
+              disableEdition
+              disableDeleteOnBackspace
+              label="Medical Conditions"
+              onChange={((diseases: string[]) => setUnsavedProfile({ ...unsavedProfile, diseases }))} />
+            <MuiChipsInput
+              value={unsavedProfile.allergies ?? []}
+              hideClearAll
+              disableEdition
+              disableDeleteOnBackspace
+              label="Allergies"
+              onChange={((allergies: string[]) => setUnsavedProfile({ ...unsavedProfile, allergies }))} />
             <Button variant="contained" type="submit">
               Submit
             </Button>
           </Stack>
         </form>
-      </Paper>
-    </Stack>
+      </Stack>
+    </Paper>
   ) : (
     <></>
   );

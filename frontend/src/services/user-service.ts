@@ -40,7 +40,7 @@ export const logout = async () => {
   const { data } = await apiClient.get("/auth/logout", {
     headers: { Authorization: `Bearer ${refreshToken}` },
   });
-
+  localStorage.removeItem("currentUser");
   return data;
 };
 

@@ -40,10 +40,10 @@ export default function Footer() {
           }}
         >
           <TabBarButton
-            label="MY ACCOUNT"
+            label="HISTORY"
             className="bottom-icon"
-            icon={<PersonIcon />}
-            onClick={() => navigate("/edit-profile")}
+            icon={<HistoryIcon />}
+            onClick={() => navigate("/home")}
           />
           <TabBarButton
             label="SCAN"
@@ -52,10 +52,10 @@ export default function Footer() {
             onClick={() => navigate("/home/new")}
           />
           <TabBarButton
-            label="HISTORY"
+            label="PROFILE"
             className="bottom-icon"
-            icon={<HistoryIcon />}
-            onClick={() => navigate("/home")}
+            icon={<PersonIcon />}
+            onClick={() => navigate("/profile")}
           />
         </BottomNavigation>
       </Paper>

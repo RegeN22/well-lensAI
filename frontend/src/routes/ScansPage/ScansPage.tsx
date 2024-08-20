@@ -1,23 +1,14 @@
-import { Box, Stack, SxProps, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ScanDataListItem from "../../features/product-scan/ScanDataListItem/ScanDataListItem";
-import UserSummaryCard from "../../features/user-profile/UserSummaryCard/UserSummaryCard";
 import { HistoryProductModel } from "../../models/product-scan.model";
 import { getUserScans } from "../../services/scan-service";
 import NewScanPage from "../NewScanPage/NewScanPage";
-import { useCurrentUser } from "../../hooks/user/useCurrentUser";
 
-const fabStyle: SxProps = {
-  position: "fixed",
-  bottom: 16,
-  right: 16,
-  display: { xs: "block", md: "none" },
-};
 
 export default function ScansPage(): JSX.Element {
   const navigate = useNavigate();
-  const [profile] = useCurrentUser();
   const [products, setProducts] = useState<HistoryProductModel[]>();
 
   useEffect(() => {
@@ -44,9 +35,6 @@ export default function ScansPage(): JSX.Element {
           spacing={1}
           direction="column"
         >
-          <Box sx={{ paddingBottom: "1em" }}>
-            <UserSummaryCard user={profile} isInteractive={true} />
-          </Box>
           <Typography variant="h5">Products</Typography>
           {products ? (
             products?.map((product: HistoryProductModel) => (
@@ -60,9 +48,6 @@ export default function ScansPage(): JSX.Element {
           )}
         </Stack>
       </Box>
-      {/* <Fab color="secondary" sx={fabStyle} onClick={() => navigate('/new')}>
-        <AddAPhotoIcon />
-      </Fab> */}
       <Stack sx={{ display: { xs: "none", md: "block" }, flex: 1 }}>
         <NewScanPage />
       </Stack>
