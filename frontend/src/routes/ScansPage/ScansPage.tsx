@@ -32,7 +32,7 @@ export default function ScansPage(): JSX.Element {
       <Box sx={{ height: "100%", overflowY: { xs: "none", md: "auto" } }}>
         <Stack
           sx={{ padding: "1em", maxWidth: "30em" }}
-          spacing={1}
+          spacing={2}
           direction="column"
           alignItems='center'
         >
@@ -49,7 +49,7 @@ export default function ScansPage(): JSX.Element {
               <Button
                 variant="contained"
                 sx={{ marginTop: '5em' }}
-                onClick={() => navigate('/home/new')}>
+                onClick={() => navigate('/new-scan')}>
                 Begin Searching
               </Button>
             </Box>

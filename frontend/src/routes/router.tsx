@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import NewScanPage from "./NewScanPage/NewScanPage";
 import UploadPic from "./UploadPic.tsx/UploadPic";
 import ScansPage from "./ScansPage/ScansPage";
 import SignIn from "./sign-in/sign-in";
@@ -25,7 +24,7 @@ export const appRouter = createBrowserRouter([
         element: <ScansPage />,
       },
       {
-        path: "/home/new",
+        path: "/new-scan",
         element: <UploadPic />,
       },
       {

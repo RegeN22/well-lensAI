@@ -40,15 +40,10 @@ export default function ScanDataListItem({ product, productImage, onSelect }: Pr
     <Card>
       <CardHeader
         avatar={
-          <Grade grade={product.rate} />
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <Grade grade={product.rate} size={60} />
         }
         title={product.name}
-        subheader="click on the arrow to see more..."
+        subheader={`Contains ${product.ingredients.length} ingredients`}
       />
       <CardMedia
         component="img"
@@ -84,25 +79,18 @@ export default function ScanDataListItem({ product, productImage, onSelect }: Pr
           <Stack spacing={1}>
             {product.ingredients.map(ingredient => {
               return <Stack direction="row" alignItems="center" spacing={1}>
-                <Grade height="32px" width="32px" grade={ingredient.rate} />
-                <Typography variant="body2">
+                <Grade size={50} grade={ingredient.rate} />
+                <Stack>
+                <Typography variant="body1">
                   {ingredient.name}
                 </Typography>
+                <Typography variant="body2" color='text.secondary'>{ingredient.text}</Typography>
+                </Stack>
               </Stack>
             })}
           </Stack>
         </CardContent>
       </Collapse>
     </Card>
-
-    // <Paper sx={{padding: "0.25em"}} onClick={() => onSelect && onSelect()}>
-    //   <Stack direction={"row"} spacing={2}>
-    //     <Grade grade={product.rate}/>
-    //     <Stack direction={"column"}>
-    //       <Typography variant="h5">{product.name}</Typography>
-    //       <Typography variant="subtitle1">{product.text}</Typography>
-    //     </Stack>
-    //   </Stack>
-    // </Paper>
   );
 }

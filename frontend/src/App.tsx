@@ -22,9 +22,9 @@ function App() {
           mode: prefersDarkMode ? "dark" : "light",
           primary: { main: "#5f6d63", light: "#9caca1", dark: '#404d44', contrastText: "white", },
           secondary: { main: "#c3f65d", light: "#dcfba3", dark: '#a1c929', contrastText: "black", },
-          error: { main: "#D64D4F" },
-          success: { main: "#318300" },
-          warning: { main: "#ffbf00" },
+          error: { main: "#FF5722" },
+          success: { main: "#4CAF50" },
+          warning: { main: "#FFC107" },
         },
         components: {
           MuiCssBaseline: {
@@ -39,7 +39,8 @@ function App() {
             styleOverrides: {
               root: ({theme}) => ({
                 backgroundColor: theme.palette.mode === 'dark' ? '#00000088' : '#ffffff88',
-                backdropFilter: 'blur(2px)'
+                backdropFilter: 'blur(2px)',
+                borderRadius: '1em'
               })
             }
           }

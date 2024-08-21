@@ -1,6 +1,6 @@
 import {
+  Box,
   Button,
-  Container,
   Divider,
   FormControl,
   FormControlLabel,
@@ -11,6 +11,7 @@ import {
   RadioGroup,
   Stack,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +52,10 @@ export default function ProfileEditPage(): JSX.Element {
   };
 
   return unsavedProfile ? (
-    <Container sx={{ padding: "1em" }}>
+    <Stack spacing={2} sx={{ padding: "1em" }}>
+      <Box sx={{ textAlign: 'center' }}>
+        <Typography variant="h4">Edit Profile</Typography>
+      </Box>
       <Paper elevation={1}>
         <Stack sx={{ padding: "1em" }} direction="column" spacing={3}>
           <Stack direction='row' justifyContent='center' alignItems='center'>
@@ -181,7 +185,7 @@ export default function ProfileEditPage(): JSX.Element {
           </form>
         </Stack>
       </Paper>
-    </Container>
+    </Stack>
   ) : (
     <></>
   );

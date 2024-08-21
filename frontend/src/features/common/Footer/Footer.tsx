@@ -41,7 +41,7 @@ export default function Footer() {
             label="Scan"
             className="bottom-icon"
             icon={<LocalSeeIcon />}
-            onClick={() => navigate("/home/new")}
+            onClick={() => navigate("/new-scan")}
           />
           <TabBarButton
             label="Profile"

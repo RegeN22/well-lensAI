@@ -1,7 +1,6 @@
 import {
-  Box,
-  Button,
   CircularProgress,
+  Stack,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -36,7 +35,6 @@ export default function UploadPic(): JSX.Element {
       const reader = new FileReader();
       reader.onloadend = () => {
         const imageUrl: string = URL.createObjectURL(file);
-        // setImage(imageUrl);
         setImage(imageUrl);
         uploadPicture(file);
       };
@@ -45,14 +43,6 @@ export default function UploadPic(): JSX.Element {
       setIsLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   enqueueSnackbar(image ?? "no image", { variant: "error" });
-  // }, [image]);
-  // const [{ data: scanData, isFetching: scanDataFetching }] = useQuery({
-  //   queryKey: ["todos", image],
-  //   queryFn: async () => await scan(image),
-  // });
 
   useEffect(() => {
     const currentUser = localStorage.getItem("currentUser");
@@ -93,53 +83,28 @@ export default function UploadPic(): JSX.Element {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
+    <Stack direction='column' alignItems='center' sx={{padding: '1em'}}>
       {product ? (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: 2,
-            mt: 2,
-          }}
-        >
+        <Stack sx={{marginBottom: '5em'}} spacing={3}>
           <ProductInfo
             grade={product?.rate}
             name={product?.name}
             overallAssessment={product?.text}
-            ingridients={ingredients}
             image={image}
           />
           <ProductIngridients ingredients={ingredients} />
-        </Box>
+        </Stack>
       ) : (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: 2,
-            mt: 10,
-          }}
-        >
+        <Stack alignItems='center' justifyContent='center'>
           <Typography
-            variant="h6"
+            variant="h4"
             textAlign="center"
-            color={"primary"}
-            fontWeight={"bold"}
-          >
-            Upload a picture of the ingredients on the back of your product
-          </Typography>
-
+          >Scan Product</Typography>
+          <Typography
+            variant="subtitle1"
+            textAlign="center"
+            color="text.secondary"
+          >Upload a picture of the ingredients on the back of your product</Typography>
           <input
             disabled={isLoading}
             accept="image/*"
@@ -147,7 +112,7 @@ export default function UploadPic(): JSX.Element {
             type="file"
             style={{ display: "none" }}
             onChange={(e) => {
-              handleUploadClick(e?.target?.files[0]);
+              handleUploadClick(e?.target?.files?.[0]);
             }}
           />
           <label htmlFor="upload-image">
@@ -172,8 +137,8 @@ export default function UploadPic(): JSX.Element {
               <AddPhotoAlternateIcon fontSize="large" />
             </LoadingButton>
           </label>
-        </Box>
+        </Stack>
       )}
-    </Box>
+    </Stack>
   );
 }
