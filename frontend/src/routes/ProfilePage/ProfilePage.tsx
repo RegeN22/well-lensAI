@@ -6,7 +6,7 @@ import { logout } from "../../services/user-service";
 
 export default function ProfilePage(): JSX.Element {
   const [profile] = useCurrentUser();
-  return <Stack sx={{ margin: '1em' }} spacing={2}>
+  return <Stack sx={{ padding: '1em' }} spacing={2}>
     <UserSummaryCard user={profile} />
     <Paper>
       <List>

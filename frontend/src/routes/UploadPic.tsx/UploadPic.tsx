@@ -172,14 +172,6 @@ export default function UploadPic(): JSX.Element {
               <AddPhotoAlternateIcon fontSize="large" />
             </LoadingButton>
           </label>
-          <Button
-            size="large"
-            disabled={isLoading}
-            sx={{ fontSize: "20px", mt: 5 }}
-            onClick={() => enqueueSnackbar("ddddd", { variant: "info" })}
-          >
-            Previous scans
-          </Button>
         </Box>
       )}
     </Box>

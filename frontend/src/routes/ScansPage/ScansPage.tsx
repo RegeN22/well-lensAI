@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ScanDataListItem from "../../features/product-scan/ScanDataListItem/ScanDataListItem";
@@ -34,9 +34,10 @@ export default function ScansPage(): JSX.Element {
           sx={{ padding: "1em", maxWidth: "30em" }}
           spacing={1}
           direction="column"
+          alignItems='center'
         >
-          <Typography variant="h5">Products</Typography>
-          {products ? (
+          <Typography variant="h4">Your Product Scans</Typography>
+          {products?.length ? (
             products?.map((product: HistoryProductModel) => (
               <ScanDataListItem
                 productImage={product?.image}
@@ -44,7 +45,14 @@ export default function ScansPage(): JSX.Element {
               />
             ))
           ) : (
-            <Typography variant="h6">Begin Searching!</Typography>
+            <Box>
+              <Button
+                variant="contained"
+                sx={{ marginTop: '5em' }}
+                onClick={() => navigate('/home/new')}>
+                Begin Searching
+              </Button>
+            </Box>
           )}
         </Stack>
       </Box>

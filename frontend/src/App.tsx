@@ -5,13 +5,12 @@ import {
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
-import { lime, purple } from "@mui/material/colors";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useMemo } from "react";
 import { RouterProvider } from "react-router-dom";
 import { appRouter } from "./routes/router.tsx";
-import { SnackbarProvider } from "notistack";
 import bgImage from './assets/bg.png';
+import bgImageDark from './assets/bg-dark.png';
 
 function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
@@ -21,8 +20,8 @@ function App() {
       createTheme({
         palette: {
           mode: prefersDarkMode ? "dark" : "light",
-          primary: { main: "#404d44" },
-          secondary: { main: "#eeffd0" },
+          primary: { main: "#5f6d63", light: "#9caca1", dark: '#404d44', contrastText: "white", },
+          secondary: { main: "#c3f65d", light: "#dcfba3", dark: '#a1c929', contrastText: "black", },
           error: { main: "#D64D4F" },
           success: { main: "#318300" },
           warning: { main: "#ffbf00" },
@@ -32,10 +31,18 @@ function App() {
             styleOverrides: (themeParam) => ({
               body: {
                 ...(themeParam.palette.mode === "dark" ? darkScrollbar() : {}),
-                backgroundImage: themeParam.palette.mode === "dark" ? 'none' : `url(${bgImage})`
+                backgroundImage: themeParam.palette.mode === "dark" ? `url(${bgImageDark})` : `url(${bgImage})`,
               },
             }),
           },
+          MuiPaper: {
+            styleOverrides: {
+              root: ({theme}) => ({
+                backgroundColor: theme.palette.mode === 'dark' ? '#00000088' : '#ffffff88',
+                backdropFilter: 'blur(2px)'
+              })
+            }
+          }
         },
       }),
     [prefersDarkMode]
