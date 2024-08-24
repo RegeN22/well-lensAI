@@ -40,6 +40,8 @@ export class UserService {
   ): Promise<UserDocument> {
     let checkConflict: UserDocument = null;
 
+    const user: UserDocument = await this.userModel.findById(userId);
+
     if (updateUser.username || updateUser.email) {
       checkConflict = await this.userModel.findOne({
         $or: [{ email: updateUser.email }, { username: updateUser.username }],
@@ -51,39 +53,43 @@ export class UserService {
       throw new ConflictException('Email or username already in use');
     }
 
-    if (updateUser.password) {
+    if (updateUser.password && updateUser.password !== user.password) {
       const salt = await bcrypt.genSalt(10);
       updateUser.password = await bcrypt.hash(updateUser.password, salt);
+    } else {
+      delete updateUser.password;
     }
+
+    const updateFields = {
+      ...(!isUndefined(updateUser.firstName) && {
+        firstName: updateUser.firstName,
+      }),
+      ...(!isUndefined(updateUser.lastName) && {
+        lastName: updateUser.lastName,
+      }),
+      ...(!isUndefined(updateUser.username) && {
+        username: updateUser.username,
+      }),
+      ...(!isUndefined(updateUser.password) && {
+        password: updateUser.password,
+      }),
+      ...(!isUndefined(updateUser.allergies) && {
+        allergies: updateUser.allergies,
+      }),
+      ...(!isUndefined(updateUser.diseases) && {
+        diseases: updateUser.diseases,
+      }),
+      ...(!isUndefined(updateUser.age) && { age: updateUser.age }),
+      ...(!isUndefined(updateUser.gender) && { gender: updateUser.gender }),
+      ...(!isUndefined(updateUser.weight) && { weight: updateUser.weight }),
+      ...(!isUndefined(updateUser.height) && { height: updateUser.height }),
+      ...(!isUndefined(updateUser.imgUrl) && { imgUrl: updateUser.imgUrl }),
+    };
 
     try {
       const updatedObj = await this.userModel.findByIdAndUpdate(
         userId,
-        {
-          ...(!isUndefined(updateUser.firstName) && {
-            firstName: updateUser.firstName,
-          }),
-          ...(!isUndefined(updateUser.lastName) && {
-            lastName: updateUser.lastName,
-          }),
-          ...(!isUndefined(updateUser.username) && {
-            username: updateUser.username,
-          }),
-          ...(!isUndefined(updateUser.password) && {
-            email: updateUser.password,
-          }),
-          ...(!isUndefined(updateUser.allergies) && {
-            allergies: updateUser.allergies,
-          }),
-          ...(!isUndefined(updateUser.diseases) && {
-            diseases: updateUser.diseases,
-          }),
-          ...(!isUndefined(updateUser.age) && { age: updateUser.age }),
-          ...(!isUndefined(updateUser.gender) && { gender: updateUser.gender }),
-          ...(!isUndefined(updateUser.weight) && { weight: updateUser.weight }),
-          ...(!isUndefined(updateUser.height) && { height: updateUser.height }),
-          ...(!isUndefined(updateUser.imgUrl) && { imgUrl: updateUser.imgUrl }),
-        },
+        updateFields,
         {
           new: true,
         },
