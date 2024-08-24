@@ -1,19 +1,27 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { HistoryModule } from './history/history.module';
-import { History, HistorySchema } from './history/history.schema';
 import { ScanModule } from './scan/scan.module';
 import { UserModule } from './user/user.module';
-import { User, UserSchema } from './user/user.schema';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    MongooseModule.forRootAsync({ inject: [ConfigService], useFactory: (configService: ConfigService) => ({uri:configService.get("DB_URL")}) }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        uri: configService.get('DB_URL'),
+      }),
+    }),
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
@@ -22,10 +30,10 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     ScanModule,
     HistoryModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
   exports: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -13,14 +13,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { MuiChipsInput } from "mui-chips-input";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PictureUpload from "../../features/product-scan/PictureUpload/PictureUpload";
 import { useCurrentUser } from "../../hooks/user/useCurrentUser";
 import { EditUserProfileModel } from "../../models/edit-user-profile.model";
 import { uploadAvatar } from "../../services/user-service";
-import UserAvatar from "../../features/user-profile/UserAvatar/UserAvatar";
-import { MuiChipsInput } from "mui-chips-input";
 
 export default function ProfileEditPage(): JSX.Element {
   const navigate = useNavigate();
@@ -53,14 +52,17 @@ export default function ProfileEditPage(): JSX.Element {
 
   return unsavedProfile ? (
     <Stack spacing={2} sx={{ padding: "1em" }}>
-      <Box sx={{ textAlign: 'center' }}>
+      <Box sx={{ textAlign: "center" }}>
         <Typography variant="h4">Edit Profile</Typography>
       </Box>
       <Paper elevation={1}>
         <Stack sx={{ padding: "1em" }} direction="column" spacing={3}>
-          <Stack direction='row' justifyContent='center' alignItems='center'>
-            <UserAvatar user={profile} size="56px" />
-            <PictureUpload btnText="Change Avatar" onUpload={changeAvatar} />
+          <Stack direction="row" justifyContent="center" alignItems="center">
+            <PictureUpload
+              btnText="Change Avatar"
+              onUpload={changeAvatar}
+              initValue={profile?.imgUrl}
+            />
           </Stack>
           <Divider />
           <form onSubmit={submitForm}>
@@ -170,14 +172,20 @@ export default function ProfileEditPage(): JSX.Element {
                 disableEdition
                 disableDeleteOnBackspace
                 label="Medical Conditions"
-                onChange={((diseases: string[]) => setUnsavedProfile({ ...unsavedProfile, diseases }))} />
+                onChange={(diseases: string[]) =>
+                  setUnsavedProfile({ ...unsavedProfile, diseases })
+                }
+              />
               <MuiChipsInput
                 value={unsavedProfile.allergies ?? []}
                 hideClearAll
                 disableEdition
                 disableDeleteOnBackspace
                 label="Allergies"
-                onChange={((allergies: string[]) => setUnsavedProfile({ ...unsavedProfile, allergies }))} />
+                onChange={(allergies: string[]) =>
+                  setUnsavedProfile({ ...unsavedProfile, allergies })
+                }
+              />
               <Button variant="contained" type="submit">
                 Submit
               </Button>

@@ -55,6 +55,6 @@ export class UserController {
     }),
   )
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return this.configService.get('URL') + file.path;
+    return this.configService.get('URL') + file.filename;
   }
 }

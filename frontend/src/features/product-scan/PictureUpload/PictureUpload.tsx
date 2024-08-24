@@ -7,14 +7,15 @@ import "./picture-upload.css"
 interface Props {
   btnText?: string;
   onUpload?: (picture: File) => void
+  initValue?: string
 }
 
 const Input = styled("input")({
   display: "none",
 });
 
-export default function PictureUpload({ btnText, onUpload }: Props): JSX.Element {
-  const [pic, setPic] = useState('')
+export default function PictureUpload({ btnText, onUpload, initValue }: Props): JSX.Element {
+  const [pic, setPic] = useState(initValue ?? '')
   const inputRef = useRef<HTMLInputElement>(null);
 
   const onUploadPicture = (file: File | undefined) => {

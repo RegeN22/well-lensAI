@@ -1,7 +1,7 @@
-import { NestApplication, NestFactory } from '@nestjs/core';
+import { INestApplication } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { INestApplication, VersioningType } from '@nestjs/common';
 
 async function bootstrap() {
   const app: INestApplication<any> = await NestFactory.create(AppModule);
