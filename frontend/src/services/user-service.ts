@@ -115,10 +115,11 @@ export const getUserById = async (userId: string) => {
 export const uploadAvatar = async (avatar: File): Promise<string> => {
   const currentUser: string | null = localStorage.getItem("currentUser");
   const { accessToken }: UserModel = currentUser ? JSON.parse(currentUser) : {};
+
   const formData = new FormData();
   formData.append("file", avatar);
-  const { data } = await apiClient.post(`/users/file`, {
-    formData,
+
+  const { data } = await apiClient.post(`/users/file`, formData, {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 
