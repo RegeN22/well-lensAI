@@ -3,7 +3,7 @@ export const GEN_AI_MODEL = 'gemini-1.5-flash';
 export const DEFAULT_SCALE = '0-10';
 
 export const ingredientsString = (ingredients: string[]): string => {
-  return `The product\'s ingredients are:\n${ingredients.map((item) => `- ${item}`).join('\n')}\n`;
+  return `The product\'s ingredients are:\n${ingredients.map((item) => `- ${item}`).join('\n')}\nREMOVE items that are not ingredients\n`;
 };
 
 export const rateItems = (scale = DEFAULT_SCALE): string => {
