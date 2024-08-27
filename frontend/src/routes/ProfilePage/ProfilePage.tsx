@@ -40,23 +40,25 @@ export default function ProfilePage(): JSX.Element {
   };
 
   return (
-    <Stack sx={{ padding: "1em" }} spacing={2}>
-      <Box sx={{ textAlign: "center" }}>
-        <Typography variant="h4">Profile</Typography>
-      </Box>
-      <UserSummaryCard user={profile} />
-      <Paper>
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => handleLogout()}>
-              <ListItemIcon>
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Log Out" />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </Paper>
+    <Stack alignItems={{xs: 'stretch', sm: 'center'}} sx={{padding: '1em'}}>
+      <Stack sx={{ minWidth: {xs: 'inherit', sm: '30em'} }} spacing={2}>
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="h4">Profile</Typography>
+        </Box>
+        <UserSummaryCard user={profile} />
+        <Paper>
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => handleLogout()}>
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Log Out" />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Paper>
+      </Stack>
     </Stack>
   );
 }

@@ -7,14 +7,14 @@ interface Props {
 }
 
 
-export default function UserAvatar({user, size}: Props): JSX.Element {
+export default function UserAvatar({user, size = '56px'}: Props): JSX.Element {
   const theme = useTheme();
   const mode = theme.palette.mode;
   const primaryBg = theme.palette.primary[mode];
   const primaryFontColor = theme.palette.primary.contrastText;
 
   return user?.imgUrl
-  ? <Avatar sx={{ width: 56, height: 56 }} src={user.imgUrl}></Avatar>
+  ? <Avatar sx={{ width: size, height: size }} src={user.imgUrl}></Avatar>
   : <Avatar sx={{ bgcolor: primaryBg, color: primaryFontColor, width: size, height: size }}>
     {(user?.firstName?.charAt(0) ?? '?') + (user?.lastName?.charAt(0) ?? '?')}
   </Avatar>

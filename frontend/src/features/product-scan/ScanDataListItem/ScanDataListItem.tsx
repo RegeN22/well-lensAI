@@ -69,19 +69,17 @@ export default function ScanDataListItem({
         <CardContent>
           <Typography variant="subtitle1">Ingredients:</Typography>
           <Stack spacing={1}>
-            {product.ingredients.map((ingredient) => {
-              return (
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Grade size={50} grade={ingredient.rate} />
-                  <Stack>
-                    <Typography variant="body1">{ingredient.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {ingredient.text}
-                    </Typography>
-                  </Stack>
+            {product.ingredients.map((ingredient) => (
+              <Stack key={ingredient.name} direction="row" alignItems="center" spacing={1}>
+                <Grade size={50} grade={ingredient.rate} />
+                <Stack>
+                  <Typography variant="body1">{ingredient.name}</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {ingredient.text}
+                  </Typography>
                 </Stack>
-              );
-            })}
+              </Stack>
+            ))}
           </Stack>
         </CardContent>
       </Collapse>

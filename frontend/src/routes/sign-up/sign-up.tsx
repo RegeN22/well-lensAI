@@ -152,7 +152,7 @@ export default function SignUp() {
           Sign Up
         </Button>
         <Container sx={{ textAlign: 'center' }}>
-          <Link onClick={() => navigate("/")} variant="body1">
+          <Link href='' onClick={() => navigate("/")} variant="body1">
             Already have an account? Sign in
           </Link>
         </Container>

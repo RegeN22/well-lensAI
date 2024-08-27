@@ -32,41 +32,30 @@ export default function PictureUpload({ btnText, onUpload, initValue }: Props): 
 
   return (
     <>
-      {pic && <img className="user-avatar" src={pic} alt="Preview" />}{" "}
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <Box sx={{ display: { xs: "none", md: "block" }, width: "500px" }}>
-            <DropzoneAreaBase
-              fileObjects={[]}
-              acceptedFiles={["image/*"]}
-              filesLimit={1}
-              showPreviewsInDropzone={true}
-              dropzoneText={"Drag and drop an image here or click"}
-              onAdd={(files) => onUploadPicture(files?.[0]?.file)}
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Stack
+          flexDirection="column"
+          alignItems="center"
+          sx={{ display: "flex", padding: 2 }}
+        >
+          <label htmlFor="image-upload">
+            <Input
+              ref={inputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={(e) => onUploadPicture(e?.target?.files?.[0])}
             />
-          </Box>
-          <Stack
-            flexDirection="column"
-            alignItems="center"
-            sx={{ display: { xs: "flex", md: "none" }, padding: 2 }}
-          >
-            <label htmlFor="image-upload">
-              <Input
-                ref={inputRef}
-                type="file"
-                accept="image/*"
-                capture="environment"
-                onChange={(e) => onUploadPicture(e?.target?.files?.[0])}
-              />
-              <Button
-                variant="outlined"
-                component="span"
-                onClick={handleButtonClick}
-              >
-                {btnText ?? 'Upload Image'}
-              </Button>
-            </label>
-          </Stack>
-        </Box>
+            <Button
+              variant="outlined"
+              component="span"
+              onClick={handleButtonClick}
+            >
+              {btnText ?? 'Upload Image'}
+            </Button>
+          </label>
+        </Stack>
+      </Box>
     </>
   );
 }

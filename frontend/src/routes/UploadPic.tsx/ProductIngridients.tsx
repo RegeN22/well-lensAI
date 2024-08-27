@@ -13,8 +13,8 @@ interface ProductIngredientsProps {
   ingredients: ProductIngredientModel[]
 }
 
-export const ProductIngridients = ({ ingredients } : ProductIngredientsProps) => {
-  const [expandedItem, setExpandedItem] = useState<string|undefined>();
+export const ProductIngridients = ({ ingredients }: ProductIngredientsProps) => {
+  const [expandedItem, setExpandedItem] = useState<string | undefined>();
   const handleCardClick = (ingredient: string) => {
     setExpandedItem(expandedItem === ingredient ? undefined : ingredient);
   };
@@ -23,8 +23,9 @@ export const ProductIngridients = ({ ingredients } : ProductIngredientsProps) =>
     <Stack spacing={1}>
       {ingredients.map((ingredient) => (
         <Card
+          key={ingredient.name}
           onClick={() => handleCardClick(ingredient.name)}
-          sx={{cursor: "pointer"}}
+          sx={{ cursor: "pointer" }}
         >
           <CardContent>
             <Stack direction='row' justifyContent='space-between' alignItems='center'>

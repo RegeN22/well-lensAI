@@ -89,7 +89,7 @@ export default function SignIn() {
           sx={{ mt: 3, mb: 2 }}
         >Sign In</Button>
         <Stack alignItems='center' spacing={1} sx={{marginTop: '1em'}}>
-          <Link onClick={() => navigate("sign-up")} variant="body1">
+          <Link href='' onClick={() => navigate("sign-up")} variant="body1">
             Don't have an account? Sign Up
           </Link>
           <Typography variant="body1">or</Typography>

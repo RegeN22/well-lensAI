@@ -1,5 +1,7 @@
 import {
+  Button,
   CircularProgress,
+  Fab,
   Stack,
   Typography,
 } from "@mui/material";
@@ -16,6 +18,7 @@ import { ProductInfo } from "./ProductInfo";
 import { ProductIngridients } from "./ProductIngridients";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 export default function UploadPic(): JSX.Element {
   const navigate = useNavigate();
@@ -30,7 +33,6 @@ export default function UploadPic(): JSX.Element {
   const handleUploadClick = (file: File | undefined) => {
     setIsLoading(true);
 
-    console.log(file);
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -56,7 +58,6 @@ export default function UploadPic(): JSX.Element {
 
     try {
       scanResult = await scan(picture);
-      console.log(scanResult);
     } catch (err) {
       const error = err as AxiosError;
       console.log(error);
@@ -83,9 +84,9 @@ export default function UploadPic(): JSX.Element {
   };
 
   return (
-    <Stack direction='column' alignItems='center' sx={{padding: '1em'}}>
+    <Stack direction='column' alignItems='center' sx={{ padding: '1em' }}>
       {product ? (
-        <Stack sx={{marginBottom: '5em'}} spacing={3}>
+        <Stack sx={{ marginBottom: '5em', maxWidth: '30em' }} spacing={3}>
           <ProductInfo
             grade={product?.rate}
             name={product?.name}
@@ -93,6 +94,12 @@ export default function UploadPic(): JSX.Element {
             image={image}
           />
           <ProductIngridients ingredients={ingredients} />
+          <Fab
+            color="primary"
+            sx={{ position: 'fixed', bottom: '64px', right: '16px' }}
+            onClick={() => setProduct(undefined)}>
+            <AddPhotoAlternateIcon />
+          </Fab>
         </Stack>
       ) : (
         <Stack alignItems='center' justifyContent='center'>
