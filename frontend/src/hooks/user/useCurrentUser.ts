@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { EditUserProfileModel } from "../../models/edit-user-profile.model";
 import { editProfile } from "../../services/user-service";
+import { enqueueSnackbar } from "notistack";
 
 export function useCurrentUser(): [
   EditUserProfileModel | undefined,
@@ -30,6 +31,9 @@ export function useCurrentUser(): [
       };
       localStorage.setItem("currentUser", JSON.stringify(updatedUser));
       setProfile(updatedUser as EditUserProfileModel);
+      enqueueSnackbar("user has been saved successfully", {
+        variant: "success",
+      });
     });
   };
 
