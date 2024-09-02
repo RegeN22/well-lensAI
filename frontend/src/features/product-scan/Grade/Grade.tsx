@@ -10,7 +10,7 @@ interface GradeProps {
 }
 
 // GradientSVG Component: Defines the linear gradient for the CircularProgressbar
-const GradientSVG = ({ grade, gradientId }: {grade: number, gradientId: string}) => {
+const GradientSVG = ({ grade, gradientId }: { grade: number, gradientId: string }) => {
   const [color, setColor] = useState<string>("");
   const { palette } = useTheme();
   const errorColor: string =
@@ -27,14 +27,12 @@ const GradientSVG = ({ grade, gradientId }: {grade: number, gradientId: string})
   const rotation = 70; // Rotation angle for the gradient
 
   useEffect(() => {
-    grade === 0
-      ? setColor("black")
-      : grade <= 4
-        ? setColor(errorColor)
-        : grade <= 7
-          ? setColor(warningColor)
-          : setColor(successColor);
-  }, [grade, errorColor, warningColor, successColor]);
+    grade <= 4
+      ? setColor(errorColor)
+      : grade <= 7
+        ? setColor(warningColor)
+        : setColor(successColor);
+  }, [grade, errorColor, warningColor, successColor, palette]);
 
   return (
     <svg style={{ height: 0, visibility: "collapse" }}>
@@ -62,13 +60,11 @@ export const Grade = ({ grade, size = 75 }: GradeProps) => {
 
 
   useEffect(() => {
-    grade === 0
-      ? setColor("black")
-      : grade <= 4
-        ? setColor(errorColor)
-        : grade <= 7
-          ? setColor(warningColor)
-          : setColor(successColor);
+    grade <= 4
+      ? setColor(errorColor)
+      : grade <= 7
+        ? setColor(warningColor)
+        : setColor(successColor);
   }, [grade, errorColor, warningColor, successColor]);
 
   return (

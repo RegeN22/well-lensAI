@@ -20,7 +20,6 @@ import PictureUpload from "../../features/product-scan/PictureUpload/PictureUplo
 import { useCurrentUser } from "../../hooks/user/useCurrentUser";
 import { EditUserProfileModel } from "../../models/edit-user-profile.model";
 import { uploadAvatar } from "../../services/user-service";
-import Avatar from '@mui/material/Avatar';
 import UserAvatar from "../../features/user-profile/UserAvatar/UserAvatar";
 
 export default function ProfileEditPage(): JSX.Element {
@@ -44,6 +43,7 @@ export default function ProfileEditPage(): JSX.Element {
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     updateProfile(unsavedProfile);
+    navigate('/profile');
   };
 
   const changeAvatar = (file: File) => {
@@ -54,7 +54,7 @@ export default function ProfileEditPage(): JSX.Element {
 
   return unsavedProfile ? (
     <Stack alignItems={{xs: 'stretch', sm: 'center'}} sx={{padding: '1em'}}>
-      <Stack sx={{ minWidth: {xs: 'inherit', sm: '30em'} }} spacing={2}>
+      <Stack sx={{ minWidth: {xs: 'inherit', sm: '30em'}, paddingBottom: '3em' }} spacing={2}>
         <Box sx={{ textAlign: "center" }}>
           <Typography variant="h4">Edit Profile</Typography>
         </Box>
